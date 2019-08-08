@@ -1,0 +1,79 @@
+
+% Chapter Template
+
+\chapter{Dataset}
+
+\label{Chapter4:Dataset} 
+
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%\url{https://fenix.tecnico.ulisboa.pt/downloadFile/1689244997256744/Thesis.pdf}
+
+In this is chapter we will be discussing about the various types of datasets available, how they were collected and which is relevant to our research. We also provide a new dataset which is more applicable to our scope of research. We will be discussing about how we collected our dataset and how could we exploit this dataset.
+
+
+\section{Existing Datasets}
+There are several datasets readily available. Saxena et al. \cite{saxena2006learning} proposed a dataset of more than 1000 outdoor and about 50 indoor RGB and laser range data. All the depth data was collected using a custom-built 3D laser scanner. The images are 2272 $\times$ 1704 in resolution, while the depth maps are 55 $\times$ 305.\\
+
+Silberman et al. \cite{Silberman:ECCV12} proposed a high quality Kinect dataset (NYU Depth-V2) in 2012 which is now being used widely across the globe. NYU Depth-V2 \cite{Silberman:ECCV12} consist of 1449 densely labeled pairs of aligned RGB and Depth images. Furthermore, it consists 407024 unlabeled frames. Former NYU dataset(NYU Depth V1) \cite{silberman11indoor} consisted of only 67 scenes while NYU Depth-V2 consist of 464 different indoor scenes. Both the images and Depth maps are 640 $\times$ 480 in resolution. The dataset is appreciated for the segmentation of a room.\\
+
+Geiger et al. \cite{Geiger2013IJRR} in 2013, proposed an outdoor dataset consisting of stereo depth images as The KITTI Dataset. KITTI Dataset is used for Autonomous Driving and Robotics purpose. It includes high resolution color and grayscale stereo camera images, laser scans, high-precision Global Positioning System(GPS) measurements and SLAM data. The main intend was to push forward the development of computer vision and robotic algorithms targeted to autonomous driving.\\
+
+In 2016, Mayer et al. \cite{MIFDB16} produced three synthetic datasets providing over 35000 stereo frames with dense ground truth for optical flow, disparity and disparity change, as well as other data such as object segmentation. The resolution of these images is 960 $\times$ 540. MPI Sintel \cite{Butler:ECCV:2012} is also a synthetic depth dataset which is available online. All these dataset were created using the open source 3D creation suite Blender.\\
+
+Another approach to collect dataset is using crowd-sourcing. Chen et al. \cite{DBLP:journals/corr/ChenFYD16} took images from Flickr\notice{plese give url for Flicker} \footnote{ \url{google.com}}  and presented the crowd-sourced workers with these images with two highlighted points asking which of the point was closer. The dataset consists of 495K diverse images, each annotated with randomly sampled points and their relative depth.\\
+
+\textbf{Other datasets:} Cornell Dataset \cite{3Dscene} , Washington Data V2 \cite{Washington} and  Berkeley 3-D Object dataset (B3DO) \cite{Janoch:EECS-2012-85} also follows the same approach of labelling the environment either for object recognition or robotics purpose. All of them were also captured using same Kinect camera approach producing RGB-D images.\\
+
+In summary, all of the Datasets mentioned above are suitable for different application scenarios. For example, NYU V2 \cite{Silberman:ECCV12} is best for Segmentation purpose, B3DO \cite{Janoch:EECS-2012-85} is suitable for Object Recognition and KITTI Dataset \cite{Geiger2013IJRR} for Autonomous Driving purpose. As we have discussed earlier, the scope of the research is to estimate depth of monocular indoor scenes and office environments from  images taken with Ipad, NYU V2 is the most relevant as it has high quality depth maps for indoor environment which can be exploited for training the network. But even NYU V2 does not fulfill the requirements of the research completely due to different camera structure and intrinsic features of Ipad and Kinect, we decide to create our own dataset using an IPAD and a Structure Sensor and \notice{use the transfer learning(discussed earlier) with the ground truths provided from NYU V2}  , then train on our dataset to make it compatible with Ipad.
+
+\section{Structure Sensor Dataset ?? or Structure Depth ? Our dataset} 
+
+In order to improve the effectiveness of the network for Ipad, we needed to train it on the Dataset which was particular for the purpose. The features neural network will learn and predict should be captured using the same camera in order to avoid any errors. Hence, we use \href{https://structure.io/}{Structure Sensor} for collecting the Dataset. The major advantage of using Structure Sensor with an Ipad over Kinect is the resolution of RGB and Depth Images. While Kinect V2 has $512\times424$ Infrared camera resolution, Structure Sensor can go upto $640\times480$. \\
+
+We present a Dataset consisting of \note{xyz} scenes and a total of \note{xyz} images captured using an Apple iPad Pro 12.9 (2015) and a Structure Sensor Camera. The dataset majorly includes images from office and classrooms environments. The dataset will be very useful for training IOS based models for depth perception from monocular Images. It consist of RGB Images of $640\times480$ as \note{n channel x bit int} and Raw Depth Images of $640\times480$ as a Numpy array. We also performed some processing to synchronize RGB and Depth Images and fill the holes of Depth Image which will be discussed later in the section. The dataset also consist of transform cordinates as a numpy matrix of $4\times4$ which is useful for reconstruction of a scenario.\\
+
+
+\subsection{Technical Specification of Structure Sensor}
+The \href{https://structure.io/}{Structure Sensor} is a 3D scanner introduced by Occipital in 2014. As the name suggests, it uses Structured-Light-System(SLS) 3D scanning. It can be easily attached to an Ipad and with Structure SDK it enables us to generate good quality RGB stream from Ipad and Depth stream from Structure Sensor at the same time. As it only weighs 95 grams and can be used as an extension to mobile device, it makes the sensor very portable. With possibility of recording 60 frames per second at a resolution of   $640\times480$, compared to Kinect V2, it has more depth pixel information. The comparision can be seen in table \ref{table:KinectVsStructureSensor}. The minimum range it can capture is 40 cm while it can capture till 4 m with fine precision. After 4 m the precision is not satisfactory enough to use it for the dataset. Occipital claims it has low frame-to-frame noise and provides 100\% fill rate on most of the materials. On the other hand Ipad Pro 12.9 provides us with an RGB video stream of $1920\times1080$ at 30 frames per second and $1080\times720$ at 60 frames per second. Ipad Pro also provides us with Camera positionings which are useful for the reconstruction of the scenario.\\
+
+\begin{table}[h]
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Features}                    & \textbf{Kinect V2}           & \textbf{Structure Sensor}         \\ \midrule
+Depth Sensor Type           & Time of Flight(ToF) & Structured Light System(SLS)                 \\
+RGB Camera Resolution       & $1920\times1080$, 30 fps & $1920\times1080$, 60 fps(Ipad Pro)     \\
+IR Camera Resolution        & $512\times424$, 30 fps   & $640\times480$, 60 fps                 \\ 
+Field of View of IR Camera  & $70^\circ\times60^\circ$           & $58^\circ\times45^\circ$                         \\
+Recommended Operative Range & 0.4 m - 3.5 m       & 0.4 m - 3.5 m                                  \\
+                            &                     &                                               
+\end{tabular}
+\caption{Comparison of Kinect V2 and Structure Sensor}
+\label{table:KinectVsStructureSensor}
+\end{table}
+
+Structure Sensor consist of a laser-emitting diode, infrared radiation range projector and an infrared sensor to sense the projected radiation. The infrared sensor records the reflecting intensity of the infrared (IR) light pattern projected by the IR projector onto the target while its  SOC triangulates the 3D scene. \cite{Kalantari} While these sensors are great devices they have some limitations. The distance they can measure is limited and they suffer from reflection problems on transparent, shiny, or very matte and absorbing objects. Another limitation is holes generated by parallax effect happening due to difference in position of the camera of Ipad and structure sensor.\\
+
+\subsection{Dataset Collection}
+
+A significant role in Machine Learning is played by Dataset and the collection makes most influence on the features that network learns. As the distance is limited to 4 m in Structure Sensor, it is not advisable for collecting the dataset outdoor. So for now, we fix the environment to only indoor offices and classrooms to reduce the possibilities of incorrect predictions. This also helps us to make the network faster and efficient for a particular purpose. \\
+
+While capturing the dataset, one should keep in mind that the network should learn only the novel features not the unwanted features. One good example of this would be the depth of a screen. Since, a screen has reflective black surface, it loses depth information resulting holes in depth image. If we feed these images to the network, it might learn the features such as, screen is always at, let say x distance. This is not a feature to be learned by the network. So before feeding it to the network we do some processing on the dataset.\\
+
+So overall the generation of holes depends upon the reflectivity of an object and the distance and position of the object. As a reflectant/glossy surface generates holes, it should not be synthesize because this leads to distortion of depth information.  All the objects farther than 4 m, we define at 4 m, in order to avoid wrong predictions and because of the scope of the research is indoor. For the shadows happening due to parallax effect, we use inpainting in order to minimize out the errors. All of these processes were included while processing the raw depth information with a unique look up table provided by Occipital to convert the pixel information to real-time distance in metres.\\
+
+\subsection{Processing the Dataset}
+
+After we have the distance in metric system, we process the data before directly training the network on these images. Since these images still contain holes and precision less pixels, it is better to fix those issues. Usually, very far pixels have less precision and results in holes as well. It is a good idea to conserve those holes in order to reconstruct the environment. Firstly, after we have the Depth images in metric system, we flag all the pixels more than 4000 cm to use them in the image later again.
+
+As discussed earlier, the Depth images contains holes from shiny/glossy objects. In office environments, these holes are mostly generated by Computer Displays. Since we do not want our network to learn that all the screens are close(0 pixel), we interpolate these holes. We do this by inpainting the whole image. This fixes the issues of shadows made due to parallax as well. \\
+
+In our first model, we made all the pixels more than 4 m as 4 m like a wall but that was not a great idea. Since, our model learns what we feed it, the model now had no proper depth perception after 4 m. So, We decide to keep all the pixels more than 4 m as holes because we can reconstruct them using a video or multiple frames later if needed. Now, We have the whole image without any holes, but we want holes in our image. So, the next step is to re generate holes for the pixels more than 4000 cm. All the pixels we flagged are now changed to zero in order to create holes. \\
+
+Our Image is ready to be fed to the network but there is still one problem. The size of the Color Image and Depth Image does not match since they have different aspect ratios. So, In the end we crop the depth image centre focused in order to make them compatible with each other.\\
+
+
+
+
+
+\newpage
