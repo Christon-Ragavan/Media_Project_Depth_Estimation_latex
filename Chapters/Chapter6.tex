@@ -16,6 +16,9 @@
 %----------------------------------------------------------------------------------------
 In this chapter we have evaluated your system and presented a comparative results  based on different experimental setup discussed in section \ref{Chapter5:Methodology}. We have categorized our experiments into 3 different sections as shown in the table below \ref{table:Results_main} to investigate in three difference area. The table \ref{table:Results_main} lists all the experiments carried out for this study on depth estimation. We have 3 accuracy values based on different threshold namely (a1, a2, and a2) and two error metrics namely root mean square error (rms) and log\_10 error as mentioned in section. Experiments \textbf{E1} and \textbf{E2} where performed to understand the importance of structural dependency of depth maps and to test our proposed model against the state of the art system. In experiments \textbf{E3} and \textbf{E4} we validate the influence of different camera intrinsic properties over data from structure sensor, by this we can also see the influence of transfer learning even when trained on different dataset with different feature properties. Experiments \textbf{E5} and \textbf{E6} was carried out to study behaviour of probabilistic distribution over the invalid pixel which we call it as holes, this leads us to answer the question of efficient way for depth estimation.
  
+ Test data: 271 image
+ Train
+ 
 % Please add the following required packages to your document preamble:
 % \usepackage{multirow}
 \begin{table}[b]
@@ -24,8 +27,8 @@ In this chapter we have evaluated your system and presented a comparative result
 \textbf{\#} & \textbf{Model} & \multicolumn{3}{l}{\textbf{Accuracy}} & \multicolumn{2}{l}{\textbf{Error}} \\ \cline{3-7} 
                     &                        & a1       & a2       & a3      & RMSE         & log\_10      \\ \hline
 \multicolumn{7}{l}{\texttt{Influence of Structural Characteristics}}                                            \\ \hline
-\textbf{E1}                  &  \textbf{A1}               &          &          &         &             &              \\ \hline
-\textbf{E2}                  & \textbf{A2}                  &          &          &         &             &              \\ \hline
+\textbf{E1}                  &  \textbf{A1}  & 0.22         & 0.43          &  0.61       & 0.34            &   0.001           \\ \hline
+\textbf{E2}                  & \textbf{A2}  &    0.60  & 0.859 & 0.93       &   0.19          &0.11              \\ \hline
 \multicolumn{7}{l}{\texttt{Influence Of Transfer Learning}}                                                                   \\ \hline
 \textbf{E3}                  & \textbf{A2\_Holes}              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
 \textbf{E4}                  & \textbf{A2\_Holes} (Retrained) & 0.33   & 0.55   & 0.63  & 0.34      & 1.78       \\ \hline
@@ -47,6 +50,24 @@ In this section we have investigated the Influence of Structural Characteristics
  
  Hence, we have a robust architecture for depth map estimation which intern helps for a better 
  
+ \begin{figure}
+\settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
+\centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
+&\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
+\rowname{E1 (a)}&
+\includegraphics[width=.3\linewidth]{Figures/results/s1_a1/u0RAW_RGB.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s1_a1/u0Truth.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s1_a1/u0Predicted.png}\\[-1ex]
+\rowname{E2 (b)}&
+\includegraphics[width=.3\linewidth]{Figures/results/s1_a1/0RAW_RGB.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s1_a1/0Truth.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s1_a1/0Predicted.png}\\[-1ex]
+\end{tabular}
+\caption{\textbf{Influence of Structural Characteristics:} All the \textbf{E3} methods are in different  }%
+\label{figure1}
+\end{figure}
+
+
  
 
  \section{Influence Of Transfer Learning}

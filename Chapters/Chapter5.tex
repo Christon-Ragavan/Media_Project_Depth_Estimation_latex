@@ -26,7 +26,6 @@ Therefore, we have two model \textbf{A1} and \textbf{A2} for validating the prop
 
 
 \subsection{Approach 1 (A1) - U Net Style Network}
-U-Net (\textbf{A1}) architecture as shown in Fig \ref{fig:A1-U-NetArchetecture} is built upon simple idea of using de-convolution layer  \footnote{not to be confused with the nomenclature, there are various names for de-convolution such as up-sampling layers or transposed convolution layer used by tensorflow and keras (\url{www.tensorflow.org/})} for up scaling the learnt feature and regeneration of depth maps. Hence the decoder block comprises of transposed 2D convolution layers which have the same dimension as the kernal size of encoder block. This means number of layers in encoder and decoder are the sample that's why the name U-Net. We use \textbf{A1} architecture since its easy to configure and understand how the up sample of network can be done. We \nadacn{Some more spec later}
 
 \begin{figure}[t]
     \centering
@@ -35,16 +34,18 @@ U-Net (\textbf{A1}) architecture as shown in Fig \ref{fig:A1-U-NetArchetecture} 
     \label{fig:A1-U-NetArchetecture}
 \end{figure}{}
 
+U-Net (\textbf{A1}) architecture as shown in Fig \ref{fig:A1-U-NetArchetecture} is built upon simple idea of using upsampling layer or de-convolution layer  \footnote{not to be confused with the nomenclature, there are various names for de-convolution such as up-sampling layers or transposed convolution layer used by tensorflow and keras (\url{www.tensorflow.org/})} for up scaling the learnt feature and regeneration of depth maps. Hence the decoder block comprises of transposed 2D convolution layers which have the same dimension as the kernal size of encoder block. This means number of layers in encoder and decoder are the sample that's why the name U-Net. We use \textbf{A1} architecture since its easy to configure and understand how the up sample of network can be done. Another advantage is training such a small network is faster but it is a challenge is the network can learn the low level features. 
+
+\textbf{A1} consists of 4 blocks of encoder and decoder part. Each block of encoder consists of 4 layers, 3 layers of 2D Convolutions and 2D max pooling layer of size 2$\times$2 at the end of each block. We designed the 3 convolutions layer with the increasing order of number of filter 4, 16 and 32 with kernel size of 3$\times$3. In the similar way in each decoder block we have 4 layers, starting with a up-sampling layer with kernel size if 2$\times$2 which means the up scaling of the image is in the factor of 2. Nearest neighbor interpolation method used by the up-sampling layer \footnote{\url{www.tensorflow.org/api_docs/python/tf/keras/layers/UpSampling2D}} implemented by keras layer. Towards the end each decoder block as 3 convolution 2D stacked in the similar way as encoder blocks. Each decoder block is concatenated with relative encoder block with has same dimension as shown in fig. \ref{fig:A1-U-NetArchetecture} with arrow marks. The dimension of encoder and decoder block output tensors are kept in symmetrical. This can be achieved by having same kernel size of max pooling at encoder part and up sampling layer at decoder, hence the symmetry in the emcoder and decoder layers. The last output layer comprises of Convolution 2D layer of 1$\times$1 with sigmoid activation. Also last layer has no stride to keep the dimension same as the input. 
+This model has input dimension of (batch size$\times$480$\times$640$\times$3) and output dimension of (480$\times$640$\times$1). 
+
+
 
 \subsection{Approach 2 (A2) - DenseNet backbone}
 
-Fig. \ref{fig:A1-U-NetArchetecture} shows an overview of our encoder-decoder network for depth estimation model proposed by Alhashim et. al. \cite{Alhashim2018}. The input RGB image is fed to the DenseNet-169 \cite{huang2017densely} network which is pretrained on ImageNet \cite{deng2009imagenet}. The output from the DenseNet block is then fed to a successive series of up-sampling layers.The decoder part is trained on the 120,000 images of NYU v2 depth dataset.  We have two option in order to reconstruct the final depth map at half the input resolution or at full resolution, this can be achived just by adding one more bi-linear upsampling layer at the end by the factor of 2 which gives us the resolution of $480 \times 640$.  For all the experiment we only used half resolution for ease of use and fast training.  Also the decoder does not contain any Batch Normalization or other advanced sub multi task layers as seen in the recent state-of-the-art methods in section \ref{Chapter3:RelatedWork_NNModel}. Backbone DenseNet architecture is designed in a feed forward fashion within a dense block or in other words such a a way that each layer is directly connected to every other layer. There are two types of DenseNet one for smaller images and another for lager images which is called DenseNetImageNet. 
-
-We use this model and use transfer learning and train on Structure dataset which is described in the section \ref{}
-
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 14cm,  height = 8.5cm]{Figures/A2.png}
+    \includegraphics[width = 15cm,  height = 10cm]{Figures/A2.png}
     \caption{DenseNet}
     \label{fig:A2-DenseNet-arch}
 \end{figure}{}
@@ -52,6 +53,14 @@ We use this model and use transfer learning and train on Structure dataset which
 
 
 
+\textbf{A2} as shown in fig. \ref{fig:A2-DenseNet-arch} shows an overview of our second approach for depth estimation. We adapted the idea proposed by Alhashim et. al. \cite{Alhashim2018}. The basic idea was to use DenseNet as backbone (encoder). The input RGB image is fed to the DenseNet-169 \cite{huang2017densely} network which is pretrained on ImageNet \cite{deng2009imagenet}.  Backbone DenseNet architecture is designed in a feed forward fashion within a dense block or in other words such a a way that each layer is directly connected to every other layer. ImageNet is a large database of images which was in turn build upon WorldNet which is organized in a hierarchical manner, which means the images are trained and clustered according to carious classes which give a good hierarchical tree and sub-tree format for classification or clustering. Another great advantage of this net is its versatility of the classes ranging from mammals, vehicles, birds to furniture with 12 subtree and giving 5247 category at the time of this paper by Deng et. al.\ref{deng2009imagenet}. ImageNet claims to have a order of 50 million images and an average of 5000 image per node \footnote{\url{http://www.image-net.org/}}. ImageNet is also good for object recognition, classification and also clustering problems. Due to such versatility ImageNet can give a us a good generalisation of the physical structure from a 2D image which is very important for our task. This also has proven to give state of the results by the model proposed by Alhashim et. al. \cite{Alhashim2018}. 
+
+
+The design of this network is in such a way that the output from the DenseNet block is  fed to a successive series of up-sampling layers. The decoder has 5 Bilinear up-sampling blocks. \(4^{th}\) block is designed in a way that it give the output resolution half of its input, which is 230$\times$320$\times$1 for input size of RGB image 460$\times$640$\times$3. The \(5^{th}\) block has up-sampling factor of 2 which gives us full resolution same as input. In all our experiments we use only 4 blocks and in post processing we up sample by the factor 2 to get full resolution. This saves some computational time. The decoder part is trained on the 120,000 images of NYU v2 depth dataset. Also the decoder does not contain any Batch Normalization or other advanced sub multi task layers as seen in the recent state-of-the-art methods in section \ref{Chapter3:RelatedWork_NNModel}.
+
+Each block of decoder comprises of 4 layers, starting with up-sampling by Bilinear with leanera interpolatin method. followed by concatenation operation and 2 convolutions 2D layers. The number of filters for these convolutions layer is decided by the number of filter obtained from the encoder layer which can be given by \(D_n =  {E_m} / {2^n}\) where \(D_n\) is number of filters at decoder block \(n\) and \(E_m\) is the number of filter present in the layer which is concatenated from encoder. The kernel size of the 2 convectional layers are of size (3$\times$3). The model proposed by  \cite{Alhashim2018} has target input dimension of 460$\times$640$\times$3 for RGB image and  dimension of 230$\times$320$\times$1 for ground truth label and we acquire the sample principles.  
+
+In this approach we also use the transfer learning by obtaining weights which was provided by Alhashim et. al. \cite{Alhashim2018}. 
 
 
 
