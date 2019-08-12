@@ -56,7 +56,7 @@ Each block of decoder comprises of 4 layers, starting with up-sampling by Bi lin
 In this approach we also use the transfer learning by obtaining weights which was provided by Alhashim et. al. \cite{Alhashim2018}. 
 
 
-\section{Experimental Setup}
+\section{System Setup}
 \label{Chapter5:Experimental_Setup}
 \subsection{Evaluation Configurations}
 
@@ -80,35 +80,55 @@ Secondly, we wanted to investigate if a model can learn the holes generated from
 
 Therefore in summary, we have two model \textbf{A1} and \textbf{A2} for validating the proposed model and effects of structural Characteristic. Further more \textbf{A2} model where retrained with two different modified input features for investigating on regeneration of holes. This gives us two more configuration of \textbf{A2} modelnamely \textbf{A2\_Holes} and \textbf{A2\_NoHoles}. 
 
-\section{Evaluation Metrics}
-For our evaluation we use standard metrics used in prior work \cite{Alhashim2018, eigen2014depth}. The error metrics are defined as follows:
+\subsection{Loss Function}
+For all the experiments we used 
 
+\subsection{Evaluation Metrics}
+For our evaluation we use standard metrics used in prior work \cite{Alhashim2018, eigen2014depth}. The error metrics are defined as follows:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
     
     \item Root Mean Squared Error (RMSE):
-    \begin{equation} \label{RMSE}
-        \sqrt{\frac{1}{n} \sum_{p}^{n}{(y_{p} - \hat{y}_{p}})^2}
-    \end{equation}
     
-    \item Average ({log_{10}}) error: 
-    \begin{equation} \label{avg_log}
-        \frac{1}{n} \sum_{p}^{n} \left|log_{10}(y_{p}) - log_{10}(\hat{y}_{p}) \right|
-    \end{equation}
-   
-    \item Threshold Accuracy (\(\deta_{i}\)): \({\delta = max (\frac{{y_{p}}}{\hat{y_{p}}}, \frac{\hat{y_{p}}}{{y_{p}}})}\)
 \end{itemize}{}
 
-\begin{equation} \label{rms}
-    {rms =  \frac{1}{n} \sum_{p}^{n} \frac{\left|y_{p} - \hat{y_{p}}\right|}{y}}
+\begin{equation} \label{RMSE}
+        \sqrt{\frac{1}{n} \sum_{p}^{n}{(y_{p} - \hat{y}_{p}})^2}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{itemize}
+
+    \item Average (${log_{10}}$) error: 
+    
+\end{itemize}{}
+
+\begin{equation} \label{avg_log}
+    \frac{1}{n} \sum_{p}^{n} \left|log_{10}(y_{p}) - log_{10}(\hat{y}_{p}) \right|
 \end{equation}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{itemize}
+    \item Threshold Accuracy (\(\delta_{i}\)): 
+\end{itemize}{}
 
- \({\frac{1}{n} \sum_{p}^{n} \left|log_{10}(y_{p}) - log_{10}(\hat{y_{p}}) \right|}\)
-
-\begin{equation} \label{accuracy}
-    {\deta = max (\frac{{y_{p}}}{\hat{y_{p}}}, \frac{\hat{y_{p}}}{{y_{p}}})}
+\begin{equation} \label{ThresholdAcc}
+    {\delta = max (\frac{{y_{p}}}{\hat{y_{p}}}, \frac{\hat{y_{p}}}{{y_{p}}})}
 \end{equation}
+
+The threshold accuracy is computed based on 3 different thershold values which are given by \(\delta < a_{i}=\) the \(a_{i}= 1.25^1, 1.25^2, 1.25^3\)  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+\subsection{Hardware Software Details}
+
+
+
 
 
 \newpage
@@ -118,7 +138,6 @@ For our evaluation we use standard metrics used in prior work \cite{Alhashim2018
 
 
 
-We would like to address that out of the 6 standard error matrics we exclude Average Relative Error (rel): 
 
 
 \section{Schedule and Milestones}

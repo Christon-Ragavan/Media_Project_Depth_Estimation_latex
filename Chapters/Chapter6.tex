@@ -21,7 +21,7 @@ In this chapter we have evaluated your system and presented a comparative result
  
 % Please add the following required packages to your document preamble:
 % \usepackage{multirow}
-\begin{table}[b]
+\begin{table}[h]
 \begin{tabular}{p{0.05\linewidth}p{0.3\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
 \hline
 \textbf{\#} & \textbf{Model} & \multicolumn{3}{l}{\textbf{Accuracy}} & \multicolumn{2}{l}{\textbf{Error}} \\ \cline{3-7} 
@@ -37,18 +37,17 @@ In this chapter we have evaluated your system and presented a comparative result
 \textbf{E6}                  & \textbf{A2\_Holes}              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
 \end{tabular}
 
-\caption{This table list all the depth estimation experiment on Structure dataset. These experiments are grouped in to 3 catogories.}
+\caption{This table list all the depth estimation experiment on Structure dataset. These experiments are grouped in to 3 catogories. All the ac accuracy (a1, a2, a3) are in the scale range between 0.0 to 1.0.  }
 \label{table:Results_main}
 \end{table}
 
 
 \section{Influence of Structural Characteristics}
 \label{Chapter6:Influence_Structural_Char}
-In this section we have investigated the Influence of Structural Characteristics of a pre-trained network.  As discribed in the section \ref{Chapter5:Methodology} we designed \textbf{A1} a simple U-Net to test against a pre-trained network by ImageNet with DenseNet configuration \textbf{A2}. 
- 
- 
- 
- Hence, we have a robust architecture for depth map estimation which intern helps for a better 
+In this section we have investigated the Influence of Structural Characteristics of a pre-trained network. \textbf{E1 - A1} model has no previously trained weights whereas \textbf{E2- A2} model has DenseNet backbone with pre trained weights, which means by evaluation \textbf{E1 - A1} against \textbf{E2 - A2} we can find out if the pre trained model can perform better. Therefore we train both the models with same structure depth dataset of 1500 images with the train, validation and test set split of 80\%, 10\%  and 10\% respectively. In \textbf{E2 - A2} case, we train only the decoder part. From the result in table \ref{table:Results_main} we see that the model performs gives a accuracy \textbf{a1} of only \textbf{0.22} which is 22 \% when compared with \textbf{A2} accuracy of \textbf{0.60}. Also the RMSE error is also high in \textbf{E1 - A1} compared to \textbf{E2 - A2}. Similarly the output from both the model in fig. \ref{fig:results_E3_E4} also shows  \textbf{E1 - A1} failed to perform. Important factor to notice is that, there were several layer parameters and hyper parameters where changed and tested before reaching the current \textbf{E1 - A2}. Due to the poor performance we did not document every step of model tunning of \textbf{E1 - A2} 
+
+Observation: On a positive note for \textbf{E1 - A1} there are two things to be noted. First,  \textbf{E1 - A1} model can learn some structure characters as seen in the predicted image in fig. \ref{fig:results_E3_E4} \textbf{E1(a)} we notice that the chair could be identified to be closer than the wall behind. Second, we noticed that training and prediction is 4 times faster than \textbf{E2 - A2} model which means smaller network can give a real time results. On the negative  side performance is very poor. 
+Therefore, it is very clear that \textbf{E2 - A2} with DenseNet backbone outperforms \textbf{E1 - A1}. The conclusion of this experience we noticed that by increasing the dataset we can improve the results which we will discuss below. And we have a better working model \textbf{A2}, hence all the following experiments where done on \textbf{A2} model. 
  
  \begin{figure}
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
@@ -64,53 +63,47 @@ In this section we have investigated the Influence of Structural Characteristics
 \includegraphics[width=.3\linewidth]{Figures/results/s1_a1/0Predicted.png}\\[-1ex]
 \end{tabular}
 \caption{\textbf{Influence of Structural Characteristics:} All the \textbf{E3} methods are in different  }%
-\label{figure1}
+\label{fig:results_E3_E4}
 \end{figure}
 
 
  
 
- \section{Influence Of Transfer Learning}
+ \section{Influence Of Transfer Learning on Cameras }
  \label{Chapter6:Transfer_Learning}
- 
+ In this section we have investigated the influence of transfer learning and also 
  
  \begin{figure}
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
 \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
 &\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
-\rowname{E4 (a)}&
+\rowname{E3 (a)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/0RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/0Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/0Predicted.png}\\[-1ex]
-&\mycaption{} & \mycaption{} & \mycaption{} \\
-\rowname{E4 (a)}&
+\rowname{E3 (b)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/1RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/1Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/1Predicted.png}\\[-1ex]
-&\mycaption{} & \mycaption{} & \mycaption{} \\
-\rowname{E4 (a)}&
+\rowname{E3 (c)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/2RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/2Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/2Predicted.png}\\[-1ex]
-&\mycaption{} & \mycaption{} & \mycaption{} \\
-\rowname{E3 (a)}&
+\rowname{E4 (a)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/0RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/0Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/0Predicted.png}\\[-1ex]
-&\mycaption{} & \mycaption{} & \mycaption{} \\
-\rowname{E3 (a)}&
+\rowname{E4 (b)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/1RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/1Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/1Predicted.png}\\[-1ex]
-&\mycaption{} & \mycaption{} & \mycaption{} \\
-\rowname{E3 (a)}&
+\rowname{E4 (c)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/2RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/2Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s3_noNyu/2Predicted.png}\\[-1ex]
-&\mycaption{} & \mycaption{} & \mycaption{} \\
 \end{tabular}
 \caption{\textbf{Investigation on hole regeneration method:} All the \textbf{E3} methods are in different  }%
-\label{figure1}
+\label{fig:results_E3_E4}
 \end{figure}
 
 
@@ -172,8 +165,6 @@ In summary, we believe that the comparing the two different input representation
 
 
 
- 
- 
- 
+\section{Qualitative evaluation}
 
-In order to have a holes recreated we mapped all the dead value or no pixel region as zero pixel as described in section \ref{Chapter4:Dataset}. We tested \ this against the 
+Here we have evaluted our result with the state of the art in the table below
