@@ -3,42 +3,27 @@
 \chapter{Basic Principles}
 \label{Chapter2:Background} 
 
-In this chapter we will discuss the basic  principles needed for this work. The entire chapter is divided into two sections. In the first chapter we will go through some theory of neural network and basic building blocks  needed for designing a proper neural network for the depth estimation task, most of the concepts are taken from Friedman et al. \cite{friedman2001elements}. Second part will be comprising of some basics of depth estimation and camera parameters concepts. Since the area of Artificial Neural Network is very vast we will be focusing on the concepts which was specifically used for this study. 
+In this chapter we will discuss the basic  principles needed for this work. The entire chapter is divided into two sections. In the first chapter we will go through some theory of neural network and basic building blocks  needed for designing a proper neural network. Most of the concepts related to ANNs are taken from the book by Friedman et al. \cite{friedman2001elements}. Second part will be comprising of some basics of depth estimation and camera parameters concepts. Since the area of Artificial Neural Network is very vast we will be focusing on the concepts which was specifically used for this study. 
 
 \section{Artificial Neural Networks}
 
-As we know Artificial Neural Networks (ANNs) are a developed similar to brain style computation consisting of different level of neurons. In other words we can say its a statistical learning or science of learning from given data. There are various types of learning approaches for solving problems
-regarding optimization \cite{friedman2001elements}. However, deep learning methodologies have proven to be favorable in ANNs and computer vision tasks such as classifying objects within images and in our we will be using Deep Convolutions Networks. 
+As we know Artificial Neural Networks (ANNs) are a developed similar to brain style computation consisting of different level of neurons. In other words we can say its a statistical learning or science of learning from given data. There are various types of learning approaches for solving problems regarding optimization . However, deep learning methodologies have proven to be favorable for many computer vision tasks related classification, detection, prediction etc.\cite{friedman2001elements} 
 
-To understand the basic types of Neural Network are supervised learning and Unsupervised learning. In general we denote \(X\) as input and \(Y\) as output of a given function. Supervised learning is when there is a labels \(y_{i}\) for each input example \(x_{i}\) where    \(\{(x_{1},y_{1}),(x_{2},y_{2}),...(x_{n},y_{n})\} \in X\) for a learning algorithm satisfying function \(f:X \rightarrow Y\) and output \( \hat{y_{i}} = P (y_{i}|x_{i})\). All labeled classification problems can be categorized under supervised learning such that. For  unsupervised learning clustering or grouping is the detection of similarities for a given input examples \({(x_{1},x_{2},...,x_{n})} \in X\) and joint density \(Pr(X)\)  where as in supervised learning \(Pr(X)\) is of no concern. In supervised learning there is a definite score of success because is \(P(y|y)\) \cite{friedman2001elements}. 
+To understand the basics we first consider the major two types of Neural Network which are supervised learning and Unsupervised learning. In general, we denote \(X\) as input and \(Y\) as output of a given function. For supervised learning, the labels \(y_{i}\) for each input example \(x_{i}\) where    \(\{(x_{1},y_{1}),(x_{2},y_{2}),...(x_{n},y_{n})\} \in X\) for a learning algorithm satisfying function \(f:X \rightarrow Y\) and in such a way that the output \( \hat{y_{i}} = P (y_{i}|x_{i})\) where the output is depended upon the input. All labeled problems can be categorized under supervised learning. For  unsupervised learning, clustering or grouping is basically defined as the detection of similarities and joint density \(Pr(X)\) for a given input examples \({(x_{1},x_{2},...,x_{n})} \in X\) . In supervised learning there is a definite score of success because is \(P(y|y)\) \cite{friedman2001elements}. 
 
 To discuss more about supervised learning with the help of simple binary logistic regression model is given by
-\begin{equation} \label{eq1}
+\begin{equation} \label{equation:feedforward}
     \hat{y_{i}} = x_{i}W + b 
 \end{equation}
-The problem of this above equation is it linmited to 
+
+In our study we used supervised learning with convolutions network. To have a basic understanding, we discuss few nuts and blots concepts of CNN. The basic building block for a simple CNN is the filter. For the naming convention we use \textit{kernel size} for expressing the size of each filter which will be used throughout this thesis to denote filter size and not to be confused with number of filter. Idea of using filter could be easily understood when related to an example approach for finding edges in an image using a filter designed for edge detection or applying some Gaussian blur. But these filter which are represented in a matrix or in tensor form can be changed, updated or transformed based on \(W\) and \(b\) which is described in equation \ref{equation:feedforward}. Applying these filters in fashion of a sliding window, the network is converting an entire image to a space of the filter which depends on kernel size and also the step of the window slide which is also called as stride. For feature learning methods and filter space adaptation, various attribute contributes to this learning process such as forward propagation and weight \(W\) updates during back propagation which in turn modeled based on various loss function using optimization methods. Optimizer which is basically a minimizing error function. In simple terms it is a error function which helps us to improve our results. Finally in order to tweak the training and optimize the learning progress we have various parameter called hyper-parameters. Some of these parameters are learning rate, in the case for gradient descent approach, decay rate which defined the descent rate after one alliteration over entire training set, various regularizes \cite{friedman2001elements}. 
 
 %where b \in\mathbb{R}
 
-\begin{equation} \label{eq2}
-    e^{\pi i} + 1 = 0
-\end{equation}
 
-The basic nuts and bolts of NNs are ...
 
 \section{Depth Estimation}
-3D Scanning have become more and more important with emerging technology of Augmented Reality and Virtual Reality. These 3D scanners use different approaches to estimate the depth out of a scene. Some of the major approaches being used are Stereo Imaging, Structured Light System(SLS), Structure from Motion(SfM), Time of Flight(ToF) and Laser Triangulation. These approaches either use single frame or multiple frame to generate the third dimension Depth. For example, SfM takes multiple frames and with different views of the object to determine the depth. This not only needs heavy computation but is time consuming as well.On the other hand, Stereo Imaging only needs two frames with a Disparity map to calculate the Depth of objects.\\
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.4]{Figures/holes.png}
-    \caption{Generation of holes due to parallax}
-    \label{fig:holes}
-\end{figure}
-
-
-ToF cameras work dynamically through the scene. They scan the environment using illuminating it with incoherent light. To measure the depth, the time taken by the light to reflect back to the sensor is noted. Although, ToF cameras are fast, they are often not accurate. The comparison between these techniques can also be seen in \ref{table:3DScanning} .These techniques are now widely being used to produce 3D scanners. For example Microsoft Kinect V2.0 uses ToF technique, while Structure Sensor by Occipital uses SLS. The comparison is discussed later in Chapter \ref{Chapter4:Dataset}.\\
-
+3D spatial awareness have become more and more important with emerging technology of Augmented Reality and Virtual Reality. These 3D scanners use different approaches to estimate the depth out of a scene. Some of the major approaches being used are Stereo Imaging\cite{stereoimaging}, Structured Light System (SLS), Structure from Motion(SfM) \cite{sfm}, Time of Flight(ToF) \cite{timeofflight} and Laser Triangulation \cite{3DLasertechnique}. These approaches either use single frame or multiple frame to generate the third dimension Depth. For example, SfM perceives the depth using motion cues alone where it takes multiple frames and with different point of views of the object to determine the the motion cues\cite{sfm}. This not only needs heavy computation but is time consuming as well. On the other hand, Stereo Imaging computes a Disparity map by matching features of left and right image to calculate the depth of objects with the help of only two images \cite{stereoimaging}.\\
 \begin{table}[h]
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -48,20 +33,19 @@ Time of Flight       & No effect of lighting & Low capture frequency     \\
 Structured Light System        & High resolution   & Prone to noise                 \\ 
                             &                     &                                               
 \end{tabular}
-\caption{Comparison of different 3D Scanning Techniques}
+\caption{Comparison of different 3D Scanning Techniques} 
 \label{table:3DScanning}
 \end{table}
+ToF cameras work dynamically through the scene. They scan the environment using illuminating it with incoherent light. To measure the depth, the time taken by the light to reflect back to the sensor is noted. Although, ToF cameras are fast, they are often not accurate. For more accuracy we need more time and hence it only works better with static objects. \cite{tof2} \nocite{Why give a short info and cite}.The comparison between these techniques can also be seen in \ref{table:3DScanning} .These techniques are now widely being used to produce 3D scanners. For example Microsoft Kinect V2.0 uses ToF technique \cite{kinecttof}, while Structure Sensor by Occipital uses SLS \cite{Kalantari}.\\
+
+Structure Sensor(2014) is an open source integration to mobile devices which can capture depth information using Structured Light System(SLS). It consist of a laser-emitting diode, infrared radiation range projector and an infrared sensor to sense the projected radiation. The infrared sensor records the reflecting intensity of the infrared (IR) light pattern projected by the IR projector onto the target while its system on the chip(SOC) triangulates the 3D scene \cite{Kalantari}(As seen in \ref{fig:Structuresensor}). Prime Sense chip (Heindl 2014) is used as the system on the chip(SOC) in Structure Sensor. The hardware can be easily installed to the mobile device through a customized USB 2.0 connection and Structure Software Development Kit. The micro lenses in the projector have different focal lengths which produces a non-uniform pattern of dots which varies at different distances \cite{Kalantari}. \\
 
 
-Structure Sensor consist of a laser-emitting diode, infrared radiation range projector and an infrared sensor to sense the projected radiation. The infrared sensor records the reflecting intensity of the infrared (IR) light pattern projected by the IR projector onto the target while its  SOC triangulates the 3D scene. \cite{Kalantari} While these sensors are great devices they have some limitations. The distance they can measure is limited and they suffer from reflection problems on transparent, shiny, or very matte and absorbing objects. Another limitation is holes generated by parallax effect happening due to difference in position of the camera of Ipad and structure sensor.\\
-
-
-
-In simpler terms, it works like human eyes. If we close one eye and then other, we notice a disparity. When there is an object we try to focus on, we see it through different angles. If the object is close enough, then sometimes one eye can see what is behind and other can not. This can be seen in figure \ref{fig:holes}. As a result, it produces a shadow of holes which can be seen in figure \ref{fig:holes2}\\
-
-
-\begin{figure}[b]
-    \includegraphics[scale=0.29]{Figures/RGB.png} \includegraphics[scale=0.37]{Figures/Depth.png}
-    \caption{Holes produced in depth image}
-    \label{fig:holes2}
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.29]{Figures/illustration-of-structure-sensor.png}
+    \caption{Illustration of Structure Sensor}
+    \label{fig:Structuresensor}
 \end{figure}
+
+The biggest advantage of Structure Sensor over any other available depth camera is the size of the hardware. As it is only 120mm long and 28mm wide, One can easily fit Structure Sensor in their pockets. Another advantage of it is that for small rooms and office environments it gives us very accurate results.

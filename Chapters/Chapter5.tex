@@ -6,7 +6,7 @@
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-In this chapter we will discuss the entire work flow and the methods used in this study. Starting from the different model architecture used. We used two two main architecture and with some configurations to answer our research questions. Also we will be discussing how the structural dataset was created and some pre processing applied in order to investigate on research question.
+In this Chapter we will discuss the entire work flow and the methods used in this study. Starting from the different model architecture and system setup describing various experimental configuration. We used two two main architecture and with some configurations to answer our research questions. Also .
 
 
 \section{System Overview}
@@ -67,7 +67,7 @@ First, Our proposed model \textbf{A1} is a simple U-Net style architecture - als
 
 Secondly, we wanted to investigate if a model can learn the holes generated from the SLB sensor. In our literature study we where unable to find previous work which was focused to make the network learn the holes and regenerated. The most common and widely used method was to either in-paint (or fill) the holes using neighboring pixel \cite{silberman11indoor} method. We approached this problem by saving the holes and map all the invalid holes to zero value instead of finding neighboring pixel which was used in NYU dataset. We trained \textbf{A2} model in two different fashion. One by mapping the holes to a zero value we call it as \textbf{A2-Holes} and another we find the neighboring pixels and we call this approach as \textbf{A2-NoHoles}. Note that, \textbf{A2-Holes} method might need some pre processing as we will will discuss more in the results section \ref{Chapter6:Results}.
 
-
+Thirdly, we wanted to investigate if dataset from different sensor with different cameras intrinsic and extrinsic properties can influence our results. This result was necessary because our study is to answer if we can replace structure sensor by neural network, for this purpose we have structure dataset to get as close results as structure sensor. For this we had to train our model with NYU\_v2 depth dataset along with structure depth dataset. We just train the decoder block of \textbf{A2}. We used pre trained weights for decoder block which were given by \cite{Alhashim2018}. This decoder block was trained with 120,000 images of NYU\_v2 depth dataset.
 
 \begin{figure}[h]
     \centering
@@ -81,7 +81,34 @@ Secondly, we wanted to investigate if a model can learn the holes generated from
 Therefore in summary, we have two model \textbf{A1} and \textbf{A2} for validating the proposed model and effects of structural Characteristic. Further more \textbf{A2} model where retrained with two different modified input features for investigating on regeneration of holes. This gives us two more configuration of \textbf{A2} modelnamely \textbf{A2\_Holes} and \textbf{A2\_NoHoles}. 
 
 \subsection{Loss Function}
-For all the experiments we used 
+A standard Loss function for depth estimation problems is computed by finding the difference in predicted values \(\hat[y]\) and truth \(y\). In our work we use loss function proposed by \cite{Alhashim2018}. One of the significe of this loss function is, it not only computes difference in t \(\hat{y}\) and truth \(y\) acting as minimizing error function but also it focus on higher frequency penalizing. The reason for having weight for higher frequency of an image is to compute the performance of the network corresponding to the object boundaries. The resultant loss function \(L\) is computed as a weighted sum of three loss functions which are pair wise loss\(L_{depth}\), image gradient loss \(L_{grad}\) and structure similarity loss  \(L_{SSIM}\) which are given below.
+
+\begin{equation} \label{eq:lossdepth}
+       L(y, \hat{y}) = \frac{1- SSIM(y, \hat{y})}{2}
+\end{equation}
+
+First the pare wise depth is given by:
+
+\begin{equation} \label{eq:lossdepth}
+      L_{depth}(y, \hat{y})= \frac{1}{n} \sum_{p}^{n} \left|y_{p} - \hat{y}_{p} \right|
+\end{equation}
+
+
+
+\begin{equation} \label{eq:lossdepth}
+       L_{grad}(y, \hat{y}) =  \frac{1}{n} \sum_{p}^{n} \left| g_{x} (y_{p} - \hat{y}_{p}) \right| + \left| g_{y} (y_{p} - \hat{y}_{p}) \right|
+\end{equation}
+where \(g_{x}\) and \(g_{y}\) compute the differences in x and y component of the depth images. 
+
+
+
+
+
+\begin{equation} \label{eq:loss}
+       L(y, \hat{y}) = \lambda L_{depth}(y, \hat{y}) + L_{grad}(y, \hat{y}) + L_{SSIM}(y, \hat{y})
+\end{equation}
+
+From the above equation \ref{eq:loss} The 
 
 \subsection{Evaluation Metrics}
 For our evaluation we use standard metrics used in prior work \cite{Alhashim2018, eigen2014depth}. The error metrics are defined as follows:
@@ -125,9 +152,12 @@ The threshold accuracy is computed based on 3 different thershold values which a
 
 
 
-\subsection{Hardware Software Details}
+\subsection{Implementation Details}
+\label{Chapter5:HardwarSoftwareDetails}
 
+\textbf{Hardware:} For all our experiments we used \textit{Nvidia Quadro RTX 8000} graphic card with Graphics processor memory 48 GB GDDR6 with ECCRTX-OPS 84T on Linux operating system with Ubuntu distribution . \nadacn{write about power consumption}.\\ 
 
+\textbf{Sotfware:} Entire study was performed on python environment.For Neural Netork we used Keras implementation with tensorflow 10.14 \cite{tensorflow2015-whitepaper}. For additional evaluation metric we also used sklearn
 
 
 
