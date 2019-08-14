@@ -55,10 +55,10 @@ headsepline, % Uncomment to get a line under the header
 \newcommand{\rowname}[1]% #1 = text
 {\rotatebox{90}{\makebox[\tempdima][c]{\textbf{#1}}}}
 
-\newcounter{subfigure}[figure]
-\renewcommand{\thesubfigure}{\alph{subfigure}}
-\newcommand{\mycaption}[1]% #1 = caption
-{\refstepcounter{subfigure}\textbf{(\thesubfigure) }{\ignorespaces #1}}
+%\newcounter{subfigure}[figure]
+%\renewcommand{\thesubfigure}{\alph{subfigure}}
+%\newcommand{\mycaption}[1]% #1 = caption
+%{\refstepcounter{subfigure}\textbf{(\thesubfigure) }{\ignorespaces #1}}
 
 
 
@@ -142,7 +142,7 @@ headsepline, % Uncomment to get a line under the header
 
 \begin{minipage}[t]{\textwidth}
         \centering
-        \emph{Author:}\\
+        \emph{Authors:}\\
         \href{http://www.christonragavan.com}{\authorname} % Author name - remove the \href bracket to remove the link
 
 \end{minipage}

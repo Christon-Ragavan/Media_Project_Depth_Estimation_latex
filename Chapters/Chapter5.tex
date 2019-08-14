@@ -80,25 +80,41 @@ Thirdly, we wanted to investigate if dataset from different sensor with differen
 
 Therefore in summary, we have two model \textbf{A1} and \textbf{A2} for validating the proposed model and effects of structural Characteristic. Further more \textbf{A2} model where retrained with two different modified input features for investigating on regeneration of holes. This gives us two more configuration of \textbf{A2} modelnamely \textbf{A2\_Holes} and \textbf{A2\_NoHoles}. 
 
+\newpage
 \subsection{Loss Function}
 A standard Loss function for depth estimation problems is computed by finding the difference in predicted values \(\hat[y]\) and truth \(y\). In our work we use loss function proposed by \cite{Alhashim2018}. One of the significe of this loss function is, it not only computes difference in t \(\hat{y}\) and truth \(y\) acting as minimizing error function but also it focus on higher frequency penalizing. The reason for having weight for higher frequency of an image is to compute the performance of the network corresponding to the object boundaries. The resultant loss function \(L\) is computed as a weighted sum of three loss functions which are pair wise loss\(L_{depth}\), image gradient loss \(L_{grad}\) and structure similarity loss  \(L_{SSIM}\) which are given below.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{equation} \label{eq:lossdepth}
-       L(y, \hat{y}) = \frac{1- SSIM(y, \hat{y})}{2}
-\end{equation}
 
-First the pare wise depth is given by:
-
+\begin{itemize}
+    \item First the pare wise depth is given by:
+\end{itemize}{}
 \begin{equation} \label{eq:lossdepth}
       L_{depth}(y, \hat{y})= \frac{1}{n} \sum_{p}^{n} \left|y_{p} - \hat{y}_{p} \right|
 \end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{itemize}
+    \item Structure similarity loss
+\end{itemize}{}
+
+\begin{equation} \label{eq:lossdepth}
+       L_{SSIM}(y, \hat{y}) = \frac{1- SSIM(y, \hat{y})}{2}
+\end{equation}
+The Structrural Similarity Index SSIM 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
+\begin{itemize}
+    \item Image gradient loss:
+\end{itemize}{}
 \begin{equation} \label{eq:lossdepth}
        L_{grad}(y, \hat{y}) =  \frac{1}{n} \sum_{p}^{n} \left| g_{x} (y_{p} - \hat{y}_{p}) \right| + \left| g_{y} (y_{p} - \hat{y}_{p}) \right|
 \end{equation}
+
+
 where \(g_{x}\) and \(g_{y}\) compute the differences in x and y component of the depth images. 
+
 
 
 

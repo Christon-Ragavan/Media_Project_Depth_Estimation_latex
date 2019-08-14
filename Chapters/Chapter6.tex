@@ -41,6 +41,7 @@ In this chapter we have evaluated your system and presented a comparative result
 \label{table:Results_main}
 \end{table}
 
+\newpage
 
 \section{Influence of Structural Characteristics}
 \label{Chapter6:Influence_Structural_Char}
@@ -71,9 +72,9 @@ Therefore, it is very clear that \textbf{E2 - A2} with DenseNet backbone outperf
 
  \section{Influence Of Transfer Learning by different Cameras properties }
  \label{Chapter6:Transfer_Learning}
- In this section, we wanted to investigate if different cameras intrinsic and extrinsic properties can influence the results on Structural sensor. One approach is 
+ In this section, we wanted to investigate if different cameras intrinsic and extrinsic properties can influence the results on Structural sensor. For this our input representation is with depth containing holes. \textbf{E3} was performed by training the decoder with 120,000 images of NYU\_v2 dataset and  1499 images of Structure Dataset. In \textbf{E4} we only used Structure dataset of 1499 images with no data augmentation. 
  
- \begin{figure}
+ \begin{figure} [h]
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
 \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
 &\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
@@ -107,14 +108,14 @@ Therefore, it is very clear that \textbf{E2 - A2} with DenseNet backbone outperf
 \end{figure}
 
 
+As we notice in output of the two different configuration in Figure \ref{fig:results_E3_E4}. The There is a significance differrence in the two preodicted 
 
 
 
 
 
 
-
- \section{Hole Regeneration Method}
+ \section{Hole Regeneration}
  \label{Chapter6:Hole_Regeneration}
 Further more to improve the results for estimation of depth maps for 3D reconstruction as our application of this work, we study the importance/influence of effects of a probabilistic distribution while regenerating holes. As described in section \ref{Chapter4:Dataset}, in order to have a holes recreated we mapped all the dead value or no pixel region as zero pixel. Therefore we have two methods of pre-possessing carried out with two different input feature type, one with holes and another without holes. We tested the performance of \textbf{A2\_Holes} against the \textbf{A2\_NoHoles} models. For both the experiments we used \textbf{A2} architecture.  In Fig. \ref{fig:results_S2} (a) - (c) we see that there a good reconstruction of the depth map were all the holes were interpolated to its neighboring pixel.  Fig. \ref{fig:results_S2} (d) - (f)  corresponds to the model with the holes as a input to the network. As we see in Fig \ref{fig:results_S2}, we compare \textbf{E5} and \textbf{E6}. We have used two different color maps for \textbf{E5} and \textbf{E6}. This is because in \textbf{E4} we wanted to highlight the difference between holes which were mapped to zero and the closest region in an image. 
 

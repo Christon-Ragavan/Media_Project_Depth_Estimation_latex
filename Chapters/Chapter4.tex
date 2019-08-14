@@ -12,13 +12,13 @@
 In this Chapter, We present our dataset created using Structure Sensor and we call it as \textbf{Structure Depth} dataset. The entire chapter is divided in to three sections. In the first section we discuss the technical details of the Structure Sensor and followed by the methods involved in creating this dataset. The last part of this chapter is about the various pre processing methods we used to performed for specific experimental setups.
 
 
-\section{The Dataset} 
+\section{Structure Depth Dataset Overview} 
 
-Our aim in this work is to deliver a robust system for depth prediction as seen in the Figure \ref{fig:Proposed_Model} for a portable hand held mobile device. In our case it is Ipad integrated with Structure sensor. In order minimize the difference between the predicted depth maps and depth map generated from Structure sensor we need to train with the similar dataset. We have also validated this in our experiments which will be discussed below in Section \ref{Chapter6:Results}. As discussed in the section \ref{Chapeter1:Topic_Description}, this will also help us to study the effect of different camera and sensor properties on diffrent environment.\\
+Our aim in this work is to deliver a robust system for depth prediction as seen in the Figure \ref{fig:Proposed_Model} for a portable hand held mobile device. In our case it is an Ipad integrated with Structure sensor. In order minimize the difference between the predicted depth maps and depth map generated from Structure sensor we need to train with the similar dataset. We have also validated this in our experiments which will be discussed below in Section \ref{Chapter6:Results}. As discussed in the section \ref{Chapeter1:Topic_Description}, this will also help us to study the effect of different camera and sensor properties on diffrent environment.\\
 
-In order to improve the effectiveness of the network for Ipad, we train it on the Dataset which was particular for the purpose. The features we want the neural network to learn and predict should have the same camera intrinsic parameters in order to decrease the amount of pre processing of the dataset. Hence, We first calibrate Ipad with Structure Sensor before collecting the Dataset. Since the future scope of the dataset is IOS platforms, we hold a big advantage as all of the RGB images were captured using an Ipad. Another major advantage of using Structure Sensor with an Ipad over Kinect is the resolution of RGB and Depth Images. While Kinect V2 has $512\times424$ Infrared camera resolution, Structure Sensor can go upto $640\times480$. \\
+As we have seen earlier in Chapter \ref{Chapter3:RelatedWork}, there are multiple datasets available but almost none fit our context. As we are already exploiting the depth features from NYU V2 for general prediction, we would like to produce a dataset which is solely application based. Here our application is mobile device, particularly IOS, we generate the dataset using an Ipad. This will not only make the intrinsic parameters to be learned by the network but also particularize for IOS based devices. As we use Ipad as integration, all the RGB Images are received from the Ipad's camera. The features we want the neural network to learn and predict should have the same camera intrinsic parameters in order to decrease the amount of pre processing of the dataset. Hence, We first calibrate Ipad with Structure Sensor before collecting the Dataset. Another major advantage of using Structure Sensor with an Ipad over Kinect is the resolution of RGB and Depth Images. While Kinect V2 has $512\times424$ Infrared camera resolution, Structure Sensor can go upto $640\times480$. \\
 
-We present a Dataset consisting of 18 scenes and a total of 2675 images captured using an Apple iPad Pro version 12.9 (2015) model and a Structure Sensor by Occipital. The dataset majorly includes images from office and classrooms environments. It consist of RGB Images of $640\times480$ as 3 channel \times 8 bit int and Raw Depth Images of $640\times480$ as a Numpy array(.npy) file. We also performed some processing to synchronize RGB and depth images and to fill the holes of depth image which will be discussed later in this chapter. We also provide the camera extrinsic parameters as a numpy matrix of $4\times4$ which is useful for reconstruction of a scenario.\\
+Our Dataset consist of 18 scenes and a total of 2675 images captured using an Apple iPad Pro version 12.9 (2015) model and a Structure Sensor by Occipital. The dataset majorly includes images from office and classrooms environments. It consist of RGB Images of $640\times480$ as 3 channel $\times$ 8 bit int and Raw Depth Images of 640 $\times$ 480 as 1 channel. Both of the images are saved using lossless compression. Later, we also perform some processing to synchronize RGB and depth images and to fill the holes of depth image which will be discussed later in this chapter. We also provide the camera extrinsic parameters as a numpy matrix of $4\times4$ which is useful for reconstruction of a scenario.\\
 
 
 \subsection{Technical Specification of Structure Sensor}
@@ -28,18 +28,19 @@ The Structure Sensor \footnote{\url{https://structure.io/}} is a 3D scanner intr
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Features}                    & \textbf{Kinect V2}           & \textbf{Structure Sensor}         \\ \midrule
-Depth Sensor Type           & Time of Flight(ToF) & Structured Light System(SLS)                 \\
-RGB Camera Resolution       & $1920\times1080$, 30 fps & $1920\times1080$, 60 fps(Ipad Pro)     \\
+Depth Sensor Type           & ToF & SLS                 \\
+RGB Camera Resolution       & $1920\times1080$, 30 fps & $1920\times1080$, 60 fps     \\
 IR Camera Resolution        & $512\times424$, 30 fps   & $640\times480$, 60 fps                 \\ 
 Field of View of IR Camera  & $70^\circ\times60^\circ$           & $58^\circ\times45^\circ$                         \\
 Recommended Operative Range & 0.4 m - 3.5 m       & 0.4 m - 3.5 m                                  \\
-                            &                     &                                               
+           &                     & 
 \end{tabular}
 \caption{Comparison of Kinect V2 and Structure Sensor}
 \label{table:KinectVsStructureSensor}
 \end{table}
 
-While these sensors are great devices they have some limitations. The distance they can measure is limited and they suffer from reflection problems on transparent, shiny or very matte and absorbing objects. Another limitation is holes generated by parallax effect happening due to difference in position of the camera of Ipad and structure sensor\cite{Kalantari}.
+While these sensors are great devices they have some limitations. The distance they can measure is limited and they suffer from reflection problems on transparent, shiny or very matte and absorbing objects. Another limitation is holes generated by parallax effect happening due to difference in position of the camera of Ipad and Structure Sensor\cite{Kalantari}. In simpler terms, it works like human eyes. If we close one eye and then other, we notice a disparity. When there is an object we try to focus on, we see it through different angles. If the object is close enough, then sometimes one eye can see what is behind and other can not. This can be seen in figure \ref{fig:holes}. As a result, it produces a shadow of holes which can be seen in figure \ref{fig:holes2}.
+
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{Figures/holes.png}
@@ -47,10 +48,7 @@ While these sensors are great devices they have some limitations. The distance t
     \label{fig:holes}
 \end{figure}
 
-
-In simpler terms, it works like human eyes. If we close one eye and then other, we notice a disparity. When there is an object we try to focus on, we see it through different angles. If the object is close enough, then sometimes one eye can see what is behind and other can not. This can be seen in figure \ref{fig:holes}. As a result, it produces a shadow of holes which can be seen in figure \ref{fig:holes2}\\
-
-\begin{figure}[b]
+\begin{figure}[h]
     \includegraphics[scale=0.29]{Figures/RGB.png} \includegraphics[scale=0.37]{Figures/Depth.png}
     \caption{Holes produced in depth image}
     \label{fig:holes2}
@@ -59,9 +57,7 @@ In simpler terms, it works like human eyes. If we close one eye and then other, 
 
 \subsection{Dataset Collection}
 
-A significant role in Machine Learning is played by Dataset and the collection makes most influence on the features that network learns. As the distance is limited in Structure Sensor and due to our scope of research we used indoor offices and classrooms to reduce the possibilities.\\
-
-While capturing the dataset, one should keep in mind that the network should learn only the novel features not the artifacts. One good example of this would be the depth of a screen. Since, a screen has reflective black surface, it loses depth information resulting holes in depth image. \note{add img for screen} If we feed these images to the network, it might learn the features such as, screen is always at, let say x distance. This is not a feature to be learned by the network. So before feeding it to the network we do some pre processing on the dataset which we will discuss next.\\
+A significant role in Machine Learning is played by Dataset and the collection of it makes most influence on the features that network learns. As the distance is limited in Structure Sensor and due to our scope of research we used indoor offices and classrooms to reduce the possibilities. While capturing the dataset, one should keep in mind that the network should learn only the novel features not the artifacts. One good instance of this would be recording the depth of a screen. Since, a screen has reflective black surface, it loses depth information resulting holes in depth image. \note{add img for screen} If we feed these images to the network, it might learn the features such as, screen is always at, let say x distance. Where x is pixel value we assign to such holes. This is not a good feature to be learned by the network instead it is an artifact. So before feeding it to the network we do some pre processing on the dataset which we will discuss next.\\
 
 The generation of holes are usually due to the reflective surface of an object or the distance and position of the object\cite{geomar41830}. As a reflective/glossy surface generates holes, it should not be synthesized because this leads to distortion of depth information.
 
