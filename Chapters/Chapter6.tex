@@ -77,13 +77,10 @@ The results from the table \ref{table:Results_main} we notice that all the three
 
 But when we compare the resultant depth maps from these two experimental configurations, visually the difference are higher with respect to precision at the object boundaries which can be seen in the Fig.\ref{fig:results_E3_E4}  where \textbf{E3 (a) - E3(c)} represented the resultant output from \textbf{E3 - A2\_Holes(N+S)} and similarly  \textbf{E4 (a) - E4(c)} represented the output from \textbf{E4 - A2\_Holes(S)}. We notice two significant difference, first a blurred effect at object edges for the model trained only on SD\_v2 dataset, where as we get refined edges with \textbf{E4 - A2\_Holes(S)}. Secondly, we observe that our model \textbf{E3 - A2\_Holes(N+S)} has learnt the holes. What is more interesting is as we see in the Fig. \ref{fig:results_E3_E4} \textbf{E3 (b)} model can learn even the complex environment which is comprised of many pole looking structures (legs of chairs in a classroom environment).
 
-Oservation: As we have seen that our \textbf{A2} model when trained with both dataset performs better than when trained on one dataset alone. On a positive note, we see that data from Kinect sensor has improved our results. On the other hand, when we consider the size of SD\_v2 compared with NVU\_v2, SD\_v2 is relatively small. So it is difficult to study and conclude the effect of camera properties. But what we can say is NYU\_v2 dataset has a significant impact in our result and our current model can be trained to higher precision even for regeneration of holes.
-
-
-
+Oservation: As we have seen that our \textbf{A2} model when trained with both dataset performs better than when trained on one dataset alone. On a positive note, we see that data from Kinect sensor has improved our results. On the other hand, when we consider the size of SD\_v2 compared with NVU\_v2, SD\_v2 is relatively small. So it is difficult to study and conclude the effect of camera properties. On the other hand the, another way to understand this effect we need a model which was only trained on NYU\_v2 and compare against our current model which is retrained with SD\_v2 dataset, since the Alhashim et. al. model was not trained no depth images with holes this would be a unfair comparison. Thus we perform another test in the following Section \ref{Chapter6:ComapreS-F-A} to validate the influence of camera properties on different environment. But with this test, we can say that NYU\_v2 dataset has a significant impact in our result.
 
  
- \begin{figure} [h]
+ \begin{figure} [!]
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
 \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
 &\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
@@ -121,17 +118,9 @@ Oservation: As we have seen that our \textbf{A2} model when trained with both da
  Also we wanted to study the influence of effects of a probabilistic distribution (in other words neural network's output is a distribution of probable values ranging from 0.0 to 1.0 on a image level) over this regenerating holes. As described in section \ref{Chapter4:Dataset}, in order to have a holes recreated we mapped all the dead value or no pixel region as zero.
 
 \newpage
+
  \section{Hole Regeneration}
  \label{Chapter6:Hole_Regeneration}
- 
-
- \begin{figure}[h]
-\centering
-    \includegraphics[width = 15cm]{Figures/results/3D/3D.png} 
-    \caption{3D visualization of depth image: (a) output of \textbf{E5 A2\_Holes} and (b)output of  \textbf{E5 A2\_NoHoles}}
-    \label{fig:3drecon}
-\end{figure}
-
 
 
 Further more to improve the results for estimation of depth maps for 3D reconstruction, we wanted to validate whether re generation of hole can give us better results. Therefore we have two methods of pre-possessing carried out with two different input feature type, one with holes and another without holes. We tested the performance of \textbf{A2\_Holes} against the \textbf{A2\_NoHoles} models. In Fig. \ref{fig:results_S2} (a) - (c) we see that there a good reconstruction of the depth map were all the holes were interpolated to its neighboring pixel.  Fig. \ref{fig:results_S2} \textbf{(d) - (f)}  corresponds to the model with the holes as a input to the network. As we see in Fig \ref{fig:results_S2}, we compare \textbf{E5} and \textbf{E6}. We have used two different color maps for \textbf{E5} and \textbf{E6}. This is because in \textbf{E4} we wanted to highlight the difference between holes which were mapped to zero and the closest region in an image. 
@@ -140,15 +129,10 @@ Further more to improve the results for estimation of depth maps for 3D reconstr
 From the table \ref{table:Results_main} we notice that the on an average the model \textbf{E5 - A2\_NoHoles} performs better. When RMSE is taken into consideration we can clearly see that \textbf{E5 - A2\_NoHoles} performs better with the RMSE of \textbf{0.10} which is \textbf{0.17} lower than the \textbf{E4 - A2\_Holes} with RMSE of \textbf{0.27}. Visually we see that both the models have very good performance. We also see the depth prediction of the complex image like in Fig. \ref{fig:results_S2} \textbf{E5(b)} and  \textbf{E6(b)} can learn the depth features and the predicted image resembles to ground truth. Thus we have a model \textbf{E5 - A2\_NoHoles} which can perform good with average accuracy of \textbf{0.98}. But when we notice our accuracy a1, a2 and a3 for both the models we see the difference of results when compared with each other, for a1 the difference in \textbf{0.59} similarly \textbf{0.40} and \textbf{0.33} for a2 and a3 respectively. These difference are high even though we notice in the Fig. \ref{fig:results_S2} we have visually good prediction. This motivated us to investigated further to find the reason behind such hugh difference in the accuracy and error. Hence we visualized the predicted imaged from both the model and mapped in a 3D space using the method proposed by \cite{Zhou2018} and the results are shown in Fig. \ref{fig:3drecon}. We notice that in \ref{fig:3drecon} \textbf{(a)}, there are many intermediate pixel predicted in between zero value (here zeros are holes) till the next nearest non-holes pixel. Also in this approach intermediate pixels are most prone to be predicted in front of the object (in between zero and the next possible neighboring pixel with non-hole value) in 3D space which is not desirable and the for removal of such artifacts, we need careful post processing techniques. It turns out that these intermediate pixels cannot be seen from the perspective of the camera, thus the Fig. \ref{fig:3drecon} \textbf{(a)} shown is rotated for better visualization of such intermediate pixels. Where as we do not see such effects in \textbf{E5 - A2\_NoHoles} rather we see a wall like structure mapped to the highest possible value. This is the most common phenomenon which we wanted to eradicate. Therefore we believe that, this is one of the factors responsible for lower accuracy rate for the \textbf{E6 A2\_Hole} model. 
 
 Observation: Since we discussed about the two factors. One with the perspective of accuracy, which is as high as \textbf{0.98} and another with respective of practical application for 3D reconstruction. Both the approach has a good depth prediction visually but for the application where the object dimensions are crucial approach with \textbf{E6\_NoHoles} will be beneficial since the intermediate pixels are comparatively less. 
-Therefore we see that given an input with holes the model can learn the holes from the given monocular image. But it results into intermediate pixel effect, which we believe makes the 3D reconstruction of a scene more difficult and demands further post processing techniques. We also stated that one of the reason for training on dataset with holes is to remove the wall effect. We see that network can learn but the one of the other motivation to try this approach was to eliminate the wall effect of depth maps  for the pixel farther than the distance limit, one approach for this solution could be taking a threshold just before the highest pixels. This solves the problem of having wall in out 3D reconstruction scene.
-
-This leads us to an conclusion that for 3D reconstruction task, interpolating of pixel is a better approach than making than network learn to predict holes because of intermediate pixel effect. But on the other hand for for etimation of depth of a frame level for distance measurement both the approach 
+Therefore we see that given an input with holes the model can learn the holes from the given monocular image. But it results into intermediate pixel effect, which we believe makes the 3D reconstruction of a scene more difficult and demands further post processing techniques. We also stated that one of the reason for training on dataset with holes is to remove the wall effect. We see that network can learn but the one of the other motivation to try this approach was to eliminate the wall effect of depth maps  for the pixel farther than the distance limit, one approach for this solution could be taking a threshold just before the highest pixels. This solves the problem of having wall in out 3D reconstruction scene.\\
 
 
-
-
-
-\begin{figure} [h]
+\begin{figure} [!]
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
 \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
 &\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
@@ -182,23 +166,64 @@ This leads us to an conclusion that for 3D reconstruction task, interpolating of
 \end{figure}
 
 
+ \begin{figure}[!]
+\settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
+\centering\begin{tabular}{c@{ }c@{ }c@{ }}
+\includegraphics[width=.5\linewidth]{Figures/results/3D/holes001.png}&
+\includegraphics[width=.5\linewidth]{Figures/results/3D/noholes002.png}\\[-1ex]
+\end{tabular}
+\caption{3D Visualization if depth map}
+\label{fig:results_E1_E2}
+\end{figure}
 
+
+This leads us to an conclusion that for 3D reconstruction task, interpolating of pixel is a better approach than making than network learn to predict holes because of intermediate pixel effect. But on the other hand for for estimation of depth of a frame level for distance measurement both the approach. Hence with the accuracy of \textbf{0.98} on \textbf{E5 A2\_NoHoles} and a good 2D and 3D visual analysis we believe this is our best model configuration After series of experiments.
 
 
 \section{Comparison With Baseline System}
+ \label{Chapter6:ComapreS-F-A}
 
 \begin{table}[h]
-\begin{tabular}{p{0.05\linewidth}p{0.3\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.07\linewidth}}
+\begin{tabular}{p{0.2\linewidth}p{0.05\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.07\linewidth}}
 \hline
-\textbf{\#} & \textbf{Model} & \multicolumn{3}{l}{\textbf{Accuracy}} & \multicolumn{2}{l}{\textbf{Error}} \\ \cline{3-7} 
-                    &                        & a1       & a2       & a3      & RMSE         & log\_10      \\ \hline
-\multicolumn{7}{l}{\texttt{Base Line}}                                            \\ \hline
-\textbf{AL}                  & \textbf{A2}  &  0.89      & 0.98 & 0.99       &   0.39          &0.043              \\ \hline
-\textbf{Our}                  &  \textbf{A1}  & 0.39         & 0.65          &  0.82       & 0.23            &   0.16           \\ \hline
+\textbf{\#} & \multicolumn{3}{l}{\textbf{Accuracy}} & {\textbf{Error}} \\ \cline{3-7} 
+    &  a1& a2  & a3    & RMSE & log\_10   \\ \hline
+\multicolumn{6}{l}{\texttt{Base Line}}  \\ \hline
+\textbf{AL}      &   0.89 & 0.98 & 0.99   & 0.39  &0.043  \\ \hline
+\textbf{Our}  &  0.39 & 0.65   &  0.82  & 0.23   &   0.16  \\ \hline
 
 
 \end{tabular}
 
-\caption{Comparism with state of the art}
+\caption{Comparison with state of the art}
 \label{table:Results_stateoftheartComplare}
 \end{table}
+
+
+
+
+
+
+\section{Influence of Structural Characteristics}
+ \begin{figure}[h]
+\settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
+\centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
+&\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
+\rowname{Al}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0RAW_RGB.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Truth.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/sfa/0Pred.png}\\[-1ex]
+\rowname{Ours}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0RAW_RGB.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Truth.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Predicted.png}\\[-1ex]
+\end{tabular}
+\caption{\textbf{Influence of Structural Characteristics:} All the \textbf{E3} methods are in different  }%
+\label{fig:results_E1_E2}
+\end{figure}
+
+
+
+
+
+From the above result, we have achieved reasonably good performing model which can learn to predict depth images which is trained to fit the structure sensor environment. For the final test for this study we would also like to compare our model with best configuration \textbf{E5 - A2\_NoHoles} with the current state of the art proposed by Alhashim et. al. \cite{Alhashim2018}. Our motivation for this evaluation to validate if our model fits the required environment for specific task for indoor 3D reconstruction. By comparing with Alhashim et. al. model eventually gives us another two answer. First we can know if dataset trained on  if it was necessary  was For this test we used  model \textbf{A2} with pre-trained weight trained on NYU\_v2 dataset alone and compared with our best performing model from above which is \textbf{E5 - A2\_NoHoles} which was trained of two dataset NYU\_v2 and SD\_v2. The only difference between these two models is the dataset with which the decoder part was trained.
