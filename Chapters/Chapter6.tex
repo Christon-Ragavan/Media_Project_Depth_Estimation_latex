@@ -28,14 +28,14 @@ In this chapter we have evaluated your system and presented a comparative result
 \textbf{E1}                  &  \textbf{A1}  & 0.22         & 0.43          &  0.61       & 0.34            &   0.001           \\ \hline
 \textbf{E2}                  & \textbf{A2}  &    0.60  & 0.859 & 0.93       &   0.19          &0.11              \\ \hline
 \multicolumn{7}{l}{\texttt{Influence Of Transfer Learning}}                                                                   \\ \hline
-\textbf{E3}                  & \textbf{A2\_Holes}(N+S)              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
-\textbf{E4}                  & \textbf{A2\_Holes}(S) & 0.33   & 0.55   & 0.63  & 0.34      & 1.78       \\ \hline
+\textbf{E3}                  & \textbf{A2\_Holes} (N+S)              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
+\textbf{E4}                  & \textbf{A2\_Holes} (S) & 0.33   & 0.55   & 0.63  & 0.34      & 1.78       \\ \hline
 \multicolumn{7}{l}{\texttt{Holes Regeneration}}                                                       \\ \hline
 \textbf{E5}                  & \textbf{A2\_NoHoles}            & 0.98   & 0.98   & 0.98  & 0.10       & 0.18        \\ \hline
 \textbf{E6}                  & \textbf{A2\_Holes}              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
 \end{tabular}
 
-\caption{This table list all the results of experimental configuration performed. These experiments are grouped in to three categories. In E3, (N+S) denotes that model trained on NYU\_v2 and SD, where as in E4, (S) denotes model trained on SD\V2}
+\caption{This table list all the results of experimental configuration performed. These experiments are grouped in to three categories. In E3, (N+S) denotes that model trained on NYU\_v2 and SD, where as in E4,(S) denotes model trained on SD\V2}
 \label{table:Results_main}
 \end{table}
 
@@ -81,6 +81,7 @@ Oservation: As we have seen that our \textbf{A2} model when trained with both da
 
 
 
+
  
  \begin{figure} [h]
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
@@ -117,48 +118,61 @@ Oservation: As we have seen that our \textbf{A2} model when trained with both da
 
 
 
-
+ Also we wanted to study the influence of effects of a probabilistic distribution (in other words neural network's output is a distribution of probable values ranging from 0.0 to 1.0 on a image level) over this regenerating holes. As described in section \ref{Chapter4:Dataset}, in order to have a holes recreated we mapped all the dead value or no pixel region as zero.
 
 \newpage
  \section{Hole Regeneration}
  \label{Chapter6:Hole_Regeneration}
-Further more to improve the results for estimation of depth maps for 3D reconstruction, we study the importance/influence of effects of a probabilistic distribution (in other words neural network's output is a distribution of probable values ranging from 0.0 to 1.0 on a image level) over this regenerating holes. As described in section \ref{Chapter4:Dataset}, in order to have a holes recreated we mapped all the dead value or no pixel region as zero. Therefore we have two methods of pre-possessing carried out with two different input feature type, one with holes and another without holes. We tested the performance of \textbf{A2\_Holes} against the \textbf{A2\_NoHoles} models. In Fig. \ref{fig:results_S2} (a) - (c) we see that there a good reconstruction of the depth map were all the holes were interpolated to its neighboring pixel.  Fig. \ref{fig:results_S2} (d) - (f)  corresponds to the model with the holes as a input to the network. As we see in Fig \ref{fig:results_S2}, we compare \textbf{E5} and \textbf{E6}. We have used two different color maps for \textbf{E5} and \textbf{E6}. This is because in \textbf{E4} we wanted to highlight the difference between holes which were mapped to zero and the closest region in an image. 
+ 
 
-From the table \ref{table:Results_main} we notice that the on an average the model \textbf{E3 (A2\_NoHoles)} performs better. When RMSE is taken into consideration we can clearly see that \textbf{E3 (A2\_NoHoles)} performs better with the RMSE of \textbf{0.10} which is \textbf{0.17} lower than the \textbf{E4 (A2\_Holes)} with RMSE of \textbf{0.27}. And when we notice our accuracy a1, a2 and a3 we see the similar results when compared. But when notice in the Fig. \ref{fig:results_S2} (d) - (f) we have visually good prediction. when investigated further why such hugh difference in the accuracy and error we found out the error lies in the object boundaries. As we see in the fig () there is a interpolation intermediate pixel from the zero value (holes which are mapped as zeros) till the actual depth. This effect is cause because of the probabilistic distribution method of neural network characteristic. We strongly this is one of there main factors contributing to the difference in the error and accuracy between \textbf{E5} and \textbf{E6}. Now that we understand why such effects can be seen for the generation of holes, it is very important us to answer if such approach is beneficial or not. Given such a problem of linear \notice{interpolating prediction} one possible solotion can be given by some post-filtering or post processing methods but the idea for the case of this study is to provide end to end approch as much as possible thereby exploiting the potential of the neural network. 
-
-Therefore we see that given an input with holes the model can learn the holes from the given monocular input. But it results into \notice{interpolating prediction} which we believe makes the 3D reconstruction of a scene more difficult and demands further post processing techniques. This leads us to an conclusion that interpolating of pixel is a better approach than making the network learn to predict holes. In addition to this, one of the other motivation to try this approach was to eliminate the wall effect of depth maps  for the pixel farther than the distance limit, one approach for this solution could be taking a threshold just before the highest pixels. This solves the problem of having wall in out 3D reconstruction scene.
-
-In summary, we believe that the comparing the two different input representation, \textbf{A2\_NoHoles} approach where the holes are interpolated with its neighboring pixels is beneficial.
-
-
-
+ \begin{figure}[h]
+\centering
+    \includegraphics[width = 15cm]{Figures/results/3D/3D.png} 
+    \caption{3D visualization of depth image: (a) output of \textbf{E5 A2\_Holes} and (b)output of  \textbf{E5 A2\_NoHoles}}
+    \label{fig:3drecon}
+\end{figure}
 
 
-\begin{figure} 
+
+Further more to improve the results for estimation of depth maps for 3D reconstruction, we wanted to validate whether re generation of hole can give us better results. Therefore we have two methods of pre-possessing carried out with two different input feature type, one with holes and another without holes. We tested the performance of \textbf{A2\_Holes} against the \textbf{A2\_NoHoles} models. In Fig. \ref{fig:results_S2} (a) - (c) we see that there a good reconstruction of the depth map were all the holes were interpolated to its neighboring pixel.  Fig. \ref{fig:results_S2} \textbf{(d) - (f)}  corresponds to the model with the holes as a input to the network. As we see in Fig \ref{fig:results_S2}, we compare \textbf{E5} and \textbf{E6}. We have used two different color maps for \textbf{E5} and \textbf{E6}. This is because in \textbf{E4} we wanted to highlight the difference between holes which were mapped to zero and the closest region in an image. 
+
+
+From the table \ref{table:Results_main} we notice that the on an average the model \textbf{E5 - A2\_NoHoles} performs better. When RMSE is taken into consideration we can clearly see that \textbf{E5 - A2\_NoHoles} performs better with the RMSE of \textbf{0.10} which is \textbf{0.17} lower than the \textbf{E4 - A2\_Holes} with RMSE of \textbf{0.27}. Visually we see that both the models have very good performance. We also see the depth prediction of the complex image like in Fig. \ref{fig:results_S2} \textbf{E5(b)} and  \textbf{E6(b)} can learn the depth features and the predicted image resembles to ground truth. Thus we have a model \textbf{E5 - A2\_NoHoles} which can perform good with average accuracy of \textbf{0.98}. But when we notice our accuracy a1, a2 and a3 for both the models we see the difference of results when compared with each other, for a1 the difference in \textbf{0.59} similarly \textbf{0.40} and \textbf{0.33} for a2 and a3 respectively. These difference are high even though we notice in the Fig. \ref{fig:results_S2} we have visually good prediction. This motivated us to investigated further to find the reason behind such hugh difference in the accuracy and error. Hence we visualized the predicted imaged from both the model and mapped in a 3D space using the method proposed by \cite{Zhou2018} and the results are shown in Fig. \ref{fig:3drecon}. We notice that in \ref{fig:3drecon} \textbf{(a)}, there are many intermediate pixel predicted in between zero value (here zeros are holes) till the next nearest non-holes pixel. Also in this approach intermediate pixels are most prone to be predicted in front of the object (in between zero and the next possible neighboring pixel with non-hole value) in 3D space which is not desirable and the for removal of such artifacts, we need careful post processing techniques. It turns out that these intermediate pixels cannot be seen from the perspective of the camera, thus the Fig. \ref{fig:3drecon} \textbf{(a)} shown is rotated for better visualization of such intermediate pixels. Where as we do not see such effects in \textbf{E5 - A2\_NoHoles} rather we see a wall like structure mapped to the highest possible value. This is the most common phenomenon which we wanted to eradicate. Therefore we believe that, this is one of the factors responsible for lower accuracy rate for the \textbf{E6 A2\_Hole} model. 
+
+Observation: Since we discussed about the two factors. One with the perspective of accuracy, which is as high as \textbf{0.98} and another with respective of practical application for 3D reconstruction. Both the approach has a good depth prediction visually but for the application where the object dimensions are crucial approach with \textbf{E6\_NoHoles} will be beneficial since the intermediate pixels are comparatively less. 
+Therefore we see that given an input with holes the model can learn the holes from the given monocular image. But it results into intermediate pixel effect, which we believe makes the 3D reconstruction of a scene more difficult and demands further post processing techniques. We also stated that one of the reason for training on dataset with holes is to remove the wall effect. We see that network can learn but the one of the other motivation to try this approach was to eliminate the wall effect of depth maps  for the pixel farther than the distance limit, one approach for this solution could be taking a threshold just before the highest pixels. This solves the problem of having wall in out 3D reconstruction scene.
+
+This leads us to an conclusion that for 3D reconstruction task, interpolating of pixel is a better approach than making than network learn to predict holes because of intermediate pixel effect. But on the other hand for for etimation of depth of a frame level for distance measurement both the approach 
+
+
+
+
+
+\begin{figure} [h]
 \settoheight{\tempdima}{\includegraphics[width=.32\linewidth]{example-image-a}}%
 \centering\begin{tabular}{@{}c@{ }c@{ }c@{ }c@{}}
 &\textbf{RGB} & \textbf{Truth} & \textbf{Predticted} \\
-\rowname{E3 (a)}&
+\rowname{E5 (a)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Predicted.png}\\[-1ex]
-\rowname{E3 (b)}&
+\rowname{E5 (b)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1Predicted.png}\\[-1ex]
-\rowname{E3 (c)}&
+\rowname{E5 (c)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2Predicted.png}\\[-1ex]
-\rowname{E4 (d)}&
+\rowname{E6 (a)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/0RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/0Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/0Predicted.png}\\[-1ex]
-\rowname{E4 (e)}&
+\rowname{E6 (b)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/1RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/1Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/1Predicted.png}\\[-1ex]
-\rowname{E4 (f)}&
+\rowname{E6 (c)}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/2RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/2Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_Holes/2Predicted.png}\\[-1ex]
@@ -171,6 +185,20 @@ In summary, we believe that the comparing the two different input representation
 
 
 
-%\section{Qualitative evaluation}
+\section{Comparison With Baseline System}
 
-%Here we have evaluted our result with the state of the art in the table below
+\begin{table}[h]
+\begin{tabular}{p{0.05\linewidth}p{0.3\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.07\linewidth}}
+\hline
+\textbf{\#} & \textbf{Model} & \multicolumn{3}{l}{\textbf{Accuracy}} & \multicolumn{2}{l}{\textbf{Error}} \\ \cline{3-7} 
+                    &                        & a1       & a2       & a3      & RMSE         & log\_10      \\ \hline
+\multicolumn{7}{l}{\texttt{Base Line}}                                            \\ \hline
+\textbf{AL}                  & \textbf{A2}  &  0.89      & 0.98 & 0.99       &   0.39          &0.043              \\ \hline
+\textbf{Our}                  &  \textbf{A1}  & 0.39         & 0.65          &  0.82       & 0.23            &   0.16           \\ \hline
+
+
+\end{tabular}
+
+\caption{Comparism with state of the art}
+\label{table:Results_stateoftheartComplare}
+\end{table}
