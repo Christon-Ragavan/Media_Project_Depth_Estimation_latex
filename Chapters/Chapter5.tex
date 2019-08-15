@@ -14,12 +14,12 @@ We approached this problem of depth map estimation from monocular images to give
 
 
 \subsection{Input Representation}
-For our study we use two datasets NYU\_v2 Depth \cite{silberman11indoor} whose depth information was obtained from kinet sensor and the other dataset was created as a part of this study from Structure sensor which is described in chapter \ref{Chapter4:Dataset}. The input dimension of target RGB images for both the approaches \textbf{A1} and \textbf{A2} are (480$\times$640$\times$3). Whereas input dimensions of ground truth depth image for \textbf{A1} is same as the target image  which is (480$\times$640$\times$1) while for \textbf{A2} is  (240$\times$320$\times$1) which is half of its target input resolution.
+For our study we use two datasets NYU\_v2 Depth \cite{silberman11indoor} whose depth information was obtained from kinect sensor and the other dataset was created as a part of this study from Structure Sensor which is described in chapter \ref{Chapter4:Dataset}. The input dimension of target RGB images for both the approaches \textbf{A1} and \textbf{A2} are (480$\times$640$\times$3). Whereas input dimensions of ground truth depth image for \textbf{A1} is same as the target image  which is (480$\times$640$\times$1) while for \textbf{A2} is  (240$\times$320$\times$1) which is half of its target input resolution.
 
-There where two pre- processing methods applied on Structure sensor one to train on holes and other with nearest interpolation method. Different input representation where used for different configuration which are described in details in the following section \ref{Chapter5:Experimental_Setup}.
+There where two pre- processing methods applied on Structure Sensor one to train on holes and other with nearest interpolation method. Different input representation where used for different configuration which are described in details in the following section \ref{Chapter5:Experimental_Setup}.
 
 \subsection{Approach 1 (A1) - U-Net Style Network}
-
+\label{Chapter5:A1}
 \begin{figure}[t]
     \centering
     \includegraphics[width = 14cm, height = 9cm]{Figures/A1.png}
@@ -29,7 +29,7 @@ There where two pre- processing methods applied on Structure sensor one to train
 
 U-Net (\textbf{A1}) architecture as shown in Fig \ref{fig:A1-U-NetArchetecture} is built upon simple idea of using upsampling layer or de-convolution layer  \footnote{not to be confused with the nomenclature, there are various names for de-convolution such as up-sampling layers or transposed convolution layer used by tensorflow and keras (\url{www.tensorflow.org/})} for up scaling the learnt feature and regeneration of depth maps. Hence the decoder block comprises of transposed 2D convolution layers which have the same dimension as the kernal size of encoder block. This means number of layers in encoder and decoder are the sample that's why the name U-Net. We use \textbf{A1} architecture since its easy to configure and understand how the up sample of network can be done. Another advantage is training such a small network is faster but it is a challenge is the network can learn the low level features. 
 
-\textbf{A1} consists of 4 blocks of encoder and decoder part. Each block of encoder consists of 4 layers, 3 layers of 2D Convolutions and 2D max pooling layer of size 2$\times$2 at the end of each block. We designed the 3 convolutions layer with the increasing order of number of filter 4, 16 and 32 with kernel size of 3$\times$3. In the similar way in each decoder block we have 4 layers, starting with a up-sampling layer with kernel size if 2$\times$2 which means the up scaling of the image is in the factor of 2. Nearest neighbor interpolation method used by the up-sampling layer \footnote{\url{www.tensorflow.org/api_docs/python/tf/keras/layers/UpSampling2D}} implemented by keras layer. Towards the end each decoder block as 3 convolution 2D stacked in the similar way as encoder blocks. Each decoder block is concatenated with relative encoder block with has same dimension as shown in fig. \ref{fig:A1-U-NetArchetecture} with arrow marks. The dimension of encoder and decoder block output tensors are kept in symmetrical. This can be achieved by having same kernel size of max pooling at encoder part and up sampling layer at decoder, hence the symmetry in the emcoder and decoder layers. The last output layer comprises of Convolution 2D layer of 1$\times$1 with sigmoid activation. Also last layer has no stride to keep the dimension same as the input. 
+\textbf{A1} consists of 4 blocks of encoder and decoder part. Each block of encoder consists of 4 layers, 3 layers of 2D Convolutions and 2D max pooling layer of size 2$\times$2 at the end of each block. We designed the 3 convolutions layer with the increasing order of number of filter 4, 16 and 32 with kernel size of 3$\times$3. In the similar way in each decoder block we have 4 layers, starting with an up-sampling layer with kernel size if 2$\times$2 which means the up scaling of the image is in the factor of 2. Nearest neighbor interpolation method used by the up-sampling layer \footnote{\url{www.tensorflow.org/api_docs/python/tf/keras/layers/UpSampling2D}} implemented by keras layer. Towards the end each decoder block has 3 convolution 2D stacked in the similar way as encoder blocks. Each decoder block is concatenated with relative encoder block which has same dimension as shown in fig. \ref{fig:A1-U-NetArchetecture} with arrow marks. The dimension of encoder and decoder block output tensors are kept in same with respect to the width and height if the image input dimension. This can be achieved by having same kernel size of max pooling at encoder part and up sampling layer at decoder, hence the symmetry in the encoder and decoder layers. The last output layer comprises of Convolution 2D layer of 1$\times$1 with sigmoid activation. Also last layer has no stride to keep the dimension same as the input. 
 This model has input dimension of (batch size$\times$480$\times$640$\times$3) and output dimension of (480$\times$640$\times$1) for both target RGB image and ground truth depth images.
 
 
@@ -46,12 +46,12 @@ This model has input dimension of (batch size$\times$480$\times$640$\times$3) an
 
 
 
-As shown in fig. \ref{fig:A2-DenseNet-arch} shows an overview of our second approach \textbf{A2} for depth estimation. We adapted the idea proposed by Alhashim et. al. \cite{Alhashim2018}. The basic idea of this approach \textbf{A2} was to use DenseNet as backbone or as an encoder from our literature study on this topic. The input RGB image is fed to the DenseNet-169 \cite{huang2017densely} network which is pretrained on ImageNet \cite{deng2009imagenet}.  Backbone DenseNet architecture is designed in a feed forward fashion within a dense block or in other words for feed forward design is that each layer is directly connected to every other layer. But since they adapt DenseNet style there is also skip connections between the layers. ImageNet is a large database of images which was build upon WorldNet which is organized in a hierarchical manner, which means the images are trained and clustered according to carious classes which give a good hierarchical tree and sub-tree format for classification or clustering. Another great advantage of this net is its versatility of the classes ranging from mammals, vehicles, birds to furniture with 12 subtree which gives us 5247 category at the time of this paper by Deng et. al.\ref{deng2009imagenet}. ImageNet claims to have a order of 50 million images and an average of 5000 image per node \footnote{\url{http://www.image-net.org/}}. ImageNet is also good for object recognition, classification and also clustering problems. Due to such versatility ImageNet can give a us a good generalisation of the physical structure from a 2D image which is very important for our task. This also has proven to give state of the results by the model proposed by Alhashim et. al. \cite{Alhashim2018}. 
+As shown in fig. \ref{fig:A2-DenseNet-arch} shows an overview of our second approach \textbf{A2} for depth estimation. We adapted the idea proposed by Alhashim et. al. \cite{Alhashim2018}. The basic idea of this approach \textbf{A2} was to use DenseNet as backbone or as an encoder from our literature study on this topic. The input RGB image is fed to the DenseNet-169 \cite{huang2017densely} network which is pretrained on ImageNet \cite{deng2009imagenet}.  Backbone DenseNet architecture is designed in a feed forward fashion within a dense block or in other words for feed forward design is that each layer is directly connected to every other layer. But since they adapt DenseNet style there is also skip connections between the layers. ImageNet is a large database of images which was build upon WorldNet which is organized in a hierarchical manner, which means the images are trained and clustered according to various classes which give a good hierarchical tree and sub-tree format for classification or clustering. Another great advantage of this net is its versatility of the classes ranging from mammals, vehicles, birds to furniture with 12 subtree which gives us 5247 category at the time of this paper by Deng et. al.\ref{deng2009imagenet}. ImageNet claims to have a order of 50 million images and an average of 5000 image per node \footnote{\url{http://www.image-net.org/}}. ImageNet is also good for object recognition, classification and also clustering problems. Due to such versatility, ImageNet can give us a good generalisation of the physical structure from a 2D image which is very important for our task. This also has proven to give state of the results by the model proposed by Alhashim et. al. \cite{Alhashim2018}. 
 
 
 The design of this network is in such a way that the output from the DenseNet block is  fed to a successive series of up-sampling layers. The decoder has 5 Bilinear up-sampling blocks. \(4^{th}\) block is designed in a way that it give the output resolution half of its input, which is 230$\times$320$\times$1 for input size of RGB image 460$\times$640$\times$3. The \(5^{th}\) block has up-sampling factor of 2 which gives us full resolution same as input. In all our experiments we use only 4 blocks and in post processing we up sample by the factor 2 to get full resolution. This saves some computational time. The decoder part is trained on the 120,000 images of NYU v2 depth dataset. Also the decoder does not contain any Batch Normalization or other advanced sub multi task layers as seen in the recent state-of-the-art methods in section \ref{Chapter3:RelatedWork_NNModel}.
 
-Each block of decoder comprises of 4 layers, starting with up-sampling by Bi linear with linear interpolation method. followed by concatenation operation and 2 convolutions 2D layers. The number of filters for these convolutions layer is decided by the number of filter obtained from the encoder layer which can be given by \(D_n =  {E_m} / {2^n}\) where \(D_n\) is number of filters at decoder block \(n\) and \(E_m\) is the number of filter present in the layer which is concatenated from encoder. The kernel size of the 2 convectional layers are of size (3$\times$3). The model proposed by  \cite{Alhashim2018} has target input dimension of 460$\times$640$\times$3 for RGB image and  dimension of 230$\times$320$\times$1 for ground truth label and we acquire the same principles for all our experiments. Also in the results section \ref{Chapter6:Results} we had some experiments by retraining the decodered part with different dataset and configurations to understand the influence of different 
+Each block of decoder comprises of 4 layers, starting with up-sampling by Bi linear with linear interpolation method. followed by concatenation operation and 2 convolutions 2D layers. The number of filters for these convolutions layer is decided by the number of filter obtained from the encoder layer which can be given by \(D_n =  {E_m} / {2^n}\) where \(D_n\) is number of filters at decoder block \(n\) and \(E_m\) is the number of filter present in the layer which is concatenated from encoder. The kernel size of these two convectional layers are of size (3$\times$3). The model proposed by  \cite{Alhashim2018} has target input dimension of 460$\times$640$\times$3 for RGB image and  dimension of 230$\times$320$\times$1 for ground truth label and we acquire the same principles for all our experiments. Also in the results section \ref{Chapter6:Results} we had some experiments by retraining the decodered part with different dataset and configurations to understand the influence of different 
 
 In this approach we also use the transfer learning by obtaining weights which was provided by Alhashim et. al. \cite{Alhashim2018}. 
 
@@ -63,11 +63,11 @@ In this approach we also use the transfer learning by obtaining weights which wa
 Our entire experimental experimental configuration are described in the fig \ref{fig:Experimental_Setup}. All the configuration where made based on two model \textbf{A1} and \textbf{A2} and two data pre-processing \textbf{Holes} and \textbf{No\_Holes} which gives us 4 configuration to analyze the approach. 
 
 
-First, Our proposed model \textbf{A1} is a simple U-Net style architecture - also can be categorized as encoder-decoder style of architecture. The reason for this model is to see if a simple network can learn the structural dependencies with respect to its depth. Knowing that the depth images are very much are highly structural dependent we wanted to see how well a network can learn without any prior knowledge. This motivated us to use an existing model to evaluate against the proposed model.We found out the our model performs relatively poor. We used the pre-trained weights of encoder and retrained the decoder layers with new structure dataset. And the results of this transfer leaning makes it more efficient. Hence we have 2 models, a simple U-Net with de-convolutional layers we call it as approach 1  (\textbf{A1}) and another model proposed by Alhashim et. al. \cite{Alhashim2018} and applied transfer learning approach we call it as approach 2 (\textbf{A2}) and \textbf{A2} become the main contribution for good results compared with U-Net approach model. 
+First, Our proposed model \textbf{A1} is a simple U-Net style architecture - also can be categorized as encoder-decoder style of architecture. There are two specific reason for designing simple architecture. (a) To understand if a simple network can learn the feature from a given depth image. one of the advantage of a simple small network is we have faster computation for the implementation (b) If a new architecture can learn without any prior knowledge of such structures, if yes how well can it perform. This motivated us to evaluate our model performance against an existing model.As previously discussed in the Chapter \ref{Chapter3:RelatedWork}  where chose approach \textbf{A2} proposed by Alhashim et. al. \cite{Alhashim2018} . Also developing \textbf{A1} involved various network configuration parameter optimization only the final best working model has been documented in the Section \ref{Chapter5:A1}. \\
 
-Secondly, we wanted to investigate if a model can learn the holes generated from the SLB sensor. In our literature study we where unable to find previous work which was focused to make the network learn the holes and regenerated. The most common and widely used method was to either in-paint (or fill) the holes using neighboring pixel \cite{silberman11indoor} method. We approached this problem by saving the holes and map all the invalid holes to zero value instead of finding neighboring pixel which was used in NYU dataset. We trained \textbf{A2} model in two different fashion. One by mapping the holes to a zero value we call it as \textbf{A2-Holes} and another we find the neighboring pixels and we call this approach as \textbf{A2-NoHoles}. Note that, \textbf{A2-Holes} method might need some pre processing as we will will discuss more in the results section \ref{Chapter6:Results}.
+Secondly, we wanted to investigate if dataset from different sensor with different cameras intrinsic and extrinsic properties can influence our results.  This result was necessary because our study is to answer if we can replace structure sensor by neural network, thus we have structure dataset to get as close results as structure sensor. This experiment also gives us a good validation base if there is a need for task and hardware based dataset for neural network models to perform on cross platform environment - in our case  the cross platform environment would be between neural network trained kinect dataset and mimicking Structure Sensor. For this our idea was to train our model with two dataset NYU\_v2 depth dataset and structure depth dataset. We train only the decoder block of \textbf{A2}. Alhashim et. al \cite{Alhashim2018} model was trained on 120,000 images from NYU\_v2 dataset and thsese weights for decoder block was publicly available. Therefore we call this experiment setup as transfer leaning approach. Hence we had two experiments, one by evaluation the model trained on  datasets from kinect sensor and another trained on both kinect and structure. By using the pre-trained weights, it saves computational time and memory while different training and experimental configuration. \\
 
-Thirdly, we wanted to investigate if dataset from different sensor with different cameras intrinsic and extrinsic properties can influence our results. This result was necessary because our study is to answer if we can replace structure sensor by neural network, for this purpose we have structure dataset to get as close results as structure sensor. For this we had to train our model with NYU\_v2 depth dataset along with structure depth dataset. We just train the decoder block of \textbf{A2}. We used pre trained weights for decoder block which were given by \cite{Alhashim2018}. This decoder block was trained with 120,000 images of NYU\_v2 depth dataset.
+Thirdly, we wanted to investigate if a model can learn the holes generated from the SLB sensor. In our literature study in Section \ref{Chapter3:RelatedWork} most of the work where based on appeach where the depth data was processed  in a way where the holes where interpolated. The most common and widely used method was to either in-paint (or fill) the holes using neighboring pixel \cite{silberman11indoor} method. We approached this problem by saving the holes and map all the invalid holes to zero value instead of finding neighboring pixel which was used in NYU dataset. We trained \textbf{A2} model in two different fashion. One by mapping the holes to a zero value we call it as \textbf{A2\_Holes} and another we find the neighboring pixels and we call this approach as \textbf{A2\_NoHoles}.
 
 \begin{figure}[h]
     \centering
@@ -78,53 +78,64 @@ Thirdly, we wanted to investigate if dataset from different sensor with differen
 
 
 
-Therefore in summary, we have two model \textbf{A1} and \textbf{A2} for validating the proposed model and effects of structural Characteristic. Further more \textbf{A2} model where retrained with two different modified input features for investigating on regeneration of holes. This gives us two more configuration of \textbf{A2} modelnamely \textbf{A2\_Holes} and \textbf{A2\_NoHoles}. 
+Therefore in summary, we have two model \textbf{A1} and \textbf{A2} for validating the proposed model and effects of structural Characteristic. Further more \textbf{A2} model where retrained with two different modified input features for investigating on regeneration of holes. This gives us two more configuration of \textbf{A2} model namely \textbf{A2\_Holes} and \textbf{A2\_NoHoles}. 
 
 \newpage
 \subsection{Loss Function}
-A standard Loss function for depth estimation problems is computed by finding the difference in predicted values \(\hat[y]\) and truth \(y\). In our work we use loss function proposed by \cite{Alhashim2018}. One of the significe of this loss function is, it not only computes difference in t \(\hat{y}\) and truth \(y\) acting as minimizing error function but also it focus on higher frequency penalizing. The reason for having weight for higher frequency of an image is to compute the performance of the network corresponding to the object boundaries. The resultant loss function \(L\) is computed as a weighted sum of three loss functions which are pair wise loss\(L_{depth}\), image gradient loss \(L_{grad}\) and structure similarity loss  \(L_{SSIM}\) which are given below.
+A standard Loss function for depth estimation problems is computed by finding the difference in predicted values \(\hat{y}\) and truth \(y\). In our work we use loss function proposed by \cite{Alhashim2018}. One of the significe of this loss function is, it not only computes difference in t \(\hat{y}\) and truth \(y\) acting as minimizing error function but also it focus on higher frequency penalizing. The reason for having weight for higher frequency of an image is to compute the performance of the network corresponding to the object boundaries. The resultant loss function \(L\) is computed as a weighted sum of three loss functions which are pair wise loss \(L_{depth}\), image gradient loss \(L_{grad}\) and structure similarity loss  \(L_{SSIM}\) which is given by:
+
+
+\begin{equation} \label{eq:loss}
+       L(y, \hat{y}) = \lambda_{1} L_{depth}(y, \hat{y}) + \lambda_{2} L_{grad}(y, \hat{y}) + \lambda_{3} L_{SSIM}(y, \hat{y})
+\end{equation}
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{itemize}
-    \item First the pare wise depth is given by:
-\end{itemize}{}
-\begin{equation} \label{eq:lossdepth}
+%\begin{itemize}
+ %   \item First the pare wise depth is given by:
+%\end{itemize}{}
+\begin{equation} \label{eq:loss_depth}
       L_{depth}(y, \hat{y})= \frac{1}{n} \sum_{p}^{n} \left|y_{p} - \hat{y}_{p} \right|
 \end{equation}
+
+First the pare wise depth is given by euation \ref{eq:loss_depth}. This gives us a pixel level understanding of error between ground truth and predicted image.  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{itemize}
-    \item Structure similarity loss
-\end{itemize}{}
-
-\begin{equation} \label{eq:lossdepth}
-       L_{SSIM}(y, \hat{y}) = \frac{1- SSIM(y, \hat{y})}{2}
-\end{equation}
-The Structrural Similarity Index SSIM 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{itemize}
-    \item Image gradient loss:
-\end{itemize}{}
-\begin{equation} \label{eq:lossdepth}
+%\begin{itemize}
+%    \item Structure similarity loss
+%\end{itemize}{}
+\begin{equation} \label{eq:loss_grad}
        L_{grad}(y, \hat{y}) =  \frac{1}{n} \sum_{p}^{n} \left| g_{x} (y_{p} - \hat{y}_{p}) \right| + \left| g_{y} (y_{p} - \hat{y}_{p}) \right|
 \end{equation}
 
 
-where \(g_{x}\) and \(g_{y}\) compute the differences in x and y component of the depth images. 
+Secound, the \(L_{grad}\), which computes the gradient changes with respect to its neighboring pixels. Here the image gradient \(g\) is computed in two directions \(g_{x}\) and \(g_{y}\) which compute the differences in \(x\) and \(y\) component of the depth images. \\
 
 
-
-
-
-
-\begin{equation} \label{eq:loss}
-       L(y, \hat{y}) = \lambda L_{depth}(y, \hat{y}) + L_{grad}(y, \hat{y}) + L_{SSIM}(y, \hat{y})
+\begin{equation} \label{eq:loss_SSIM}
+       L_{SSIM}(y, \hat{y}) = \frac{1- SSIM(y, \hat{y})}{2}
 \end{equation}
 
-From the above equation \ref{eq:loss} The 
+Third, the Structrural Similarity Index (SSIM) proposed by Wang et. al. \cite{wang2004image} gives us a good understating of groups of pixel based of comparative measure of three components individually which are luminance, contrast and structure similarities between ground truth and predicted. The final \(L_{SSIM}\) is a reciprocal version of SSIM as in \cite{Alhashim2018,  ummenhofer2017demon, huang2018deepmvs}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\begin{itemize}
+%    \item Image gradient loss:
+%\end{itemize}{}
+
+
+We used tensorflow implementation of \(L_{grad}\) \footnote{\url{https://www.tensorflow.org/api_docs/python/tf/image/image_gradients}} and \(L_{SSIM}\) \footnote{\url{https://www.tensorflow.org/api_docs/python/tf/image/ssim}}  in our study \cite{tensorflow2015-whitepaper}. Though out the experiments the weightage factor for our loss function in equation \ref{eq:loss} where set to  \(\lambda_{1} = 0.1, \lambda_{2} = 1, \lambda_{3} = 1\) suggested by \cite{Alhashim2018}. Hence we try to supervise our network based on structural similarities more than pixel level similarities. 
+
+
+
+
+
+%From the above equation \ref{eq:loss} The 
 
 \subsection{Evaluation Metrics}
 For our evaluation we use standard metrics used in prior work \cite{Alhashim2018, eigen2014depth}. The error metrics are defined as follows:
@@ -160,7 +171,7 @@ For our evaluation we use standard metrics used in prior work \cite{Alhashim2018
     {\delta = max (\frac{{y_{p}}}{\hat{y_{p}}}, \frac{\hat{y_{p}}}{{y_{p}}})}
 \end{equation}
 
-The threshold accuracy is computed based on 3 different thershold values which are given by \(\delta < a_{i}=\) the \(a_{i}= 1.25^1, 1.25^2, 1.25^3\)  
+The threshold accuracy is computed based on 3 different thershold values which are given by \(\delta < a_{i}= the\)  \(a_{i}= 1.25^1, 1.25^2, 1.25^3\)  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -170,10 +181,11 @@ The threshold accuracy is computed based on 3 different thershold values which a
 
 \subsection{Implementation Details}
 \label{Chapter5:HardwarSoftwareDetails}
+%ECCRTX-OPS 84T 
+\textbf{Hardware:} For all our experiments we used \textit{Nvidia Quadro RTX 8000} graphic card with Graphics processor GDDR6  having memory of 48 Gigabyte on Linux operating system with Ubuntu distribution 18.04. For capturing dataset, we used Apple iPad Pro version 12.9 (2015) integrated with Structure Sensor by Occipital with the help of Structure Software Development Kit.\\
 
-\textbf{Hardware:} For all our experiments we used \textit{Nvidia Quadro RTX 8000} graphic card with Graphics processor memory 48 GB GDDR6 with ECCRTX-OPS 84T on Linux operating system with Ubuntu distribution . \nadacn{write about power consumption}.\\ 
 
-\textbf{Sotfware:} Entire study was performed on python environment.For Neural Netork we used Keras implementation with tensorflow 10.14 \cite{tensorflow2015-whitepaper}. For additional evaluation metric we also used sklearn
+\textbf{Sotfware:} Entire study was performed on python environment.For Neural Network we used Keras implementation with tensorflow 1 \cite{tensorflow2015-whitepaper}.
 
 
 
