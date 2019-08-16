@@ -68,17 +68,17 @@ Thirdly, We were also interested to study about the effect of different camera a
 These three problems gives us a clear direction to formulates some of the specific questions to be answered in this work which is described below. 
 
 
-\section{Research questions and scientific contributions}
+\section{Reseach Goal and Research questions}
 %1 page: Hence, this thesis tries to answer the following research question(s):
+In this study our primary goal is to achieve a Neural Network model which can work as similar to the Structure sensor with respect to depth image generation. In this process of answer the possibilities of a good working model through our study, we have have structured our research by asking these underlying question which can help us to find the best possible solution to our problem. And we have formulated into these following questions:
 
-This work tries to address the following two questions:
 \begin{itemize}
-    \item RQ1: Can a Neural Network mimic SLS in predicting relative depth of a scene?
+    \item RQ1: How well can a transfer learning approach of a neural network model perform in a task independent fashion.
     \item RQ2: Can a Neural Network learn to regenerate the holes from a given depth information available from ?
     \item RQ3: Can a Neural Network learn Different Camera intrinsic and extrinsic parameters?  
 \end{itemize}
 
-In order to answer the three questions mentioned above, we propose a state-of-the-art approach using neural networks for this problem. Also generation of a new dataset is required to answer RQ2 and RQ3. This is because our goal is to achieve a model which replaces a specific SLS which is Structure Sensor and also most of the approach does not focus in retrieving the holes and existing dataset like Cornell Dataset \cite{3Dscene} , Washington Data V2 \cite{Washington}, Berkeley 3-D Object dataset (B3DO) \cite{Janoch:EECS-2012-85} etc. fail to provide with the holes except NYUv2 dataset with contains raw data information we will discuss more about the dataset in detain in section \ref{Chapter4:Dataset}. To give a justified reason for RQ3, we need to generate new dataset to have a common ground for comparison. 
+We have design out experimental setup in such a way that we can find answers to the above mentioned questions therby . Al Also generation of a new dataset is required to answer RQ2 and RQ3. This is because our goal is to achieve a model which replaces a specific SLS which is Structure Sensor and also most of the approach does not focus in retrieving the holes and existing dataset like Cornell Dataset \cite{3Dscene} , Washington Data V2 \cite{Washington}, Berkeley 3-D Object dataset (B3DO) \cite{Janoch:EECS-2012-85} etc. fail to provide with the holes except NYUv2 dataset with contains raw data information we will discuss more about the dataset in detain in section \ref{Chapter4:Dataset}. To give a justified reason for RQ3, we need to generate new dataset to have a common ground for comparison. 
 
 Our three main contributions for this work are first, proposed a neural network model for depth map generation and compare with state of the art results. Secondly to deliver model which performs as good as Structure Sensor. Thirdly,  we created a new dataset based on Structural (SLB) Sensor.
 
