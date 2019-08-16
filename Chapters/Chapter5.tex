@@ -58,9 +58,9 @@ In this approach we also use the transfer learning by obtaining weights which wa
 
 \section{System Setup}
 \label{Chapter5:Experimental_Setup}
-\subsection{Evaluation Configurations}
+\subsection{Training and Experimental Configurations}
 
-Our entire experimental experimental configuration are described in the fig \ref{fig:Experimental_Setup}. All the configuration where made based on two model \textbf{A1} and \textbf{A2} and two data pre-processing \textbf{Holes} and \textbf{No\_Holes} which gives us 4 configuration to analyze the approach. 
+ Our entire experimental experimental configuration are described in the fig \ref{fig:Experimental_Setup}. All the configuration where made based on two model \textbf{A1} and \textbf{A2} and two data pre-processing \textbf{Holes} and \textbf{No\_Holes} which gives us 4 configuration to analyze the approach. 
 
 
 First, Our proposed model \textbf{A1} is a simple U-Net style architecture - also can be categorized as encoder-decoder style of architecture. There are two specific reason for designing simple architecture. (a) To understand if a simple network can learn the feature from a given depth image. one of the advantage of a simple small network is we have faster computation for the implementation (b) If a new architecture can learn without any prior knowledge of such structures, if yes how well can it perform. This motivated us to evaluate our model performance against an existing model.As previously discussed in the Chapter \ref{Chapter3:RelatedWork}  where chose approach \textbf{A2} proposed by Alhashim et. al. \cite{Alhashim2018} . Also developing \textbf{A1} involved various network configuration parameter optimization only the final best working model has been documented in the Section \ref{Chapter5:A1}. \\
@@ -82,6 +82,7 @@ Therefore in summary, we have two model \textbf{A1} and \textbf{A2} for validati
 
 \newpage
 \subsection{Loss Function}
+\label{Chapter5:LossFunction}
 A standard Loss function for depth estimation problems is computed by finding the difference in predicted values \(\hat{y}\) and truth \(y\). In our work we use loss function proposed by \cite{Alhashim2018}. One of the significe of this loss function is, it not only computes difference in t \(\hat{y}\) and truth \(y\) acting as minimizing error function but also it focus on higher frequency penalizing. The reason for having weight for higher frequency of an image is to compute the performance of the network corresponding to the object boundaries. The resultant loss function \(L\) is computed as a weighted sum of three loss functions which are pair wise loss \(L_{depth}\), image gradient loss \(L_{grad}\) and structure similarity loss  \(L_{SSIM}\) which is given by:
 
 
@@ -132,12 +133,13 @@ Third, the Structrural Similarity Index (SSIM) proposed by Wang et. al. \cite{wa
 We used tensorflow implementation of \(L_{grad}\) \footnote{\url{https://www.tensorflow.org/api_docs/python/tf/image/image_gradients}} and \(L_{SSIM}\) \footnote{\url{https://www.tensorflow.org/api_docs/python/tf/image/ssim}}  in our study \cite{tensorflow2015-whitepaper}. Though out the experiments the weightage factor for our loss function in equation \ref{eq:loss} where set to  \(\lambda_{1} = 0.1, \lambda_{2} = 1, \lambda_{3} = 1\) suggested by \cite{Alhashim2018}. Hence we try to supervise our network based on structural similarities more than pixel level similarities. 
 
 
-
+\newpage
 
 
 %From the above equation \ref{eq:loss} The 
 
 \subsection{Evaluation Metrics}
+\label{Chapter5:Evaluation_mat}
 For our evaluation we use standard metrics used in prior work \cite{Alhashim2018, eigen2014depth}. The error metrics are defined as follows:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
@@ -182,10 +184,15 @@ The threshold accuracy is computed based on 3 different thershold values which a
 \subsection{Implementation Details}
 \label{Chapter5:HardwarSoftwareDetails}
 %ECCRTX-OPS 84T 
+Here we mention all the necessary tools and modules used in this study. \\
+
+ \textbf{Training Configurations:} Though out all our  experiments we trained all our model for 1000 epoc with an early stopping of 10. We used Adam \cite{kingma2014adam} optimizer with the learning rate of \(10^{-4}\). For loss function and evaluation metrics we use as described in Section \ref{Chapter5:LossFunction} and Section \ref{Chapter5:Evaluation_mat} respectively. \\
+ 
+ 
 \textbf{Hardware:} For all our experiments we used \textit{Nvidia Quadro RTX 8000} graphic card with Graphics processor GDDR6  having memory of 48 Gigabyte on Linux operating system with Ubuntu distribution 18.04. For capturing dataset, we used Apple iPad Pro version 12.9 (2015) integrated with Structure Sensor by Occipital with the help of Structure Software Development Kit.\\
 
 
-\textbf{Sotfware:} Entire study was performed on python environment.For Neural Network we used Keras implementation with tensorflow 1 \cite{tensorflow2015-whitepaper}.
+\textbf{Sotfware:} We used Keras framework with Tensorflow backend for python environment for implementing Neural Network model for this entire study \cite{tensorflow2015-whitepaper}.
 
 
 
