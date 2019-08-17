@@ -37,7 +37,7 @@ Meanwhile as we know there is a remarkable interest grown in brain style computa
 \begin{figure}[!b]
     \centering
     \includegraphics[width = 12cm]{Figures/ipad.jpg}
-    \caption{Structural SensorImage Scource: Amazon.com}
+    \caption{Structural Sensor}
     \label{fig:Structural_Sensor}
 \end{figure}{}
 
@@ -52,7 +52,7 @@ In summary, as we understand the importance of depth estimation and its possibil
 \begin{figure}[h]
     \centering
     \includegraphics[width = 12cm]{Figures/idea.png}
-    \caption{Topic Idea: The highlighted region in red box from existing system (a) is replaced by highlighted region in red box in proposed method (b)}
+    \caption{Scope Of Research: The highlighted region in red box from existing system (a) is replaced by highlighted region in red box in proposed method (b)}
     \label{fig:Proposed_Model}
 \end{figure}{}
 %1-2 page(s): What are you doing?
@@ -68,19 +68,21 @@ Thirdly, We were also interested to study about the effect of different camera a
 These three problems gives us a clear direction to formulates some of the specific questions to be answered in this work which is described below. 
 
 
-\section{Reseach Goal and Research questions}
+\section{Research Goal and Research Questions}
 %1 page: Hence, this thesis tries to answer the following research question(s):
-In this study our primary goal is to achieve a Neural Network model which can work as similar to the Structure sensor with respect to depth image generation. In this process of answer the possibilities of a good working model through our study, we have have structured our research by asking these underlying question which can help us to find the best possible solution to our problem. And we have formulated into these following questions:
+In this study our primary and final goal is to achieve a Neural Network model which can work as similar to the Structure sensor by estimating the depth image from a given 2D image in an indoor environment. In this process of study, in order to achieve a good working model, we have have structured our research by asking some underlying question which can help us to find the best possible solution to our problem. And we have formulated into these following questions:
 
 \begin{itemize}
-    \item RQ1: How well can a transfer learning approach of a neural network model perform in a task independent fashion.
-    \item RQ2: Can a Neural Network learn to regenerate the holes from a given depth information available from ?
-    \item RQ3: Can a Neural Network learn Different Camera intrinsic and extrinsic parameters?  
+    \item \textbf{RQ1}: How well can a transfer learning approach of a neural network model perform which is environment and task dependent?
+    \item \textbf{RQ2}: Will there be an Influence of different Camera and sensor properties on a cross platform environment?    
+    \item \textbf{RQ3}: Can a Neural Network learn to regenerate the holes from a given depth information available from?
 \end{itemize}
 
-We have design out experimental setup in such a way that we can find answers to the above mentioned questions therby . Al Also generation of a new dataset is required to answer RQ2 and RQ3. This is because our goal is to achieve a model which replaces a specific SLS which is Structure Sensor and also most of the approach does not focus in retrieving the holes and existing dataset like Cornell Dataset \cite{3Dscene} , Washington Data V2 \cite{Washington}, Berkeley 3-D Object dataset (B3DO) \cite{Janoch:EECS-2012-85} etc. fail to provide with the holes except NYUv2 dataset with contains raw data information we will discuss more about the dataset in detain in section \ref{Chapter4:Dataset}. To give a justified reason for RQ3, we need to generate new dataset to have a common ground for comparison. 
+We have design out experimental setup in such a way that we can find answers to the above mentioned questions which is described in Section \ref{Chapter5:Experimental_Setup}. First the most important question to answer for us is  \textbf{RQ1}, because various methods in monocular depth estimation have used different encoders which was designed for different task like object detection, classification etc. and acquire common structural feature which in turn used  for depth estimation, we will discuss in detail about such methods in Section \ref{Chapter3:RelatedWork_NNModel}. Also various methods methods where designed for specific task. Our task is to find a best model for specific sensor which is environment and task dependent (in our case the environment is IPad with Structure sensor and for indoor depth estimation task). This leads us to the second question \textbf{RQ2}, if transfer learning approach can give us an improved results, will the model which was task and environment dependent have influence over a new and different environment?. Because in Section \ref{Chapter3:RelatedWork_NNModel} we will discuss that many methods have been investigated based on the Kinect environment for various indoor and outdoor tasks but not specifically to Structure sensor.  By answering these two question we believe to achieve a best solution approach for our task. Then we can answer the third idea of regeneration of holes with the help of \textbf{RQ3}. More specifically the intuition would be, if a model can regenerate holes to its precision as close to Structure sensor then we can say the Neural Network has ability to mimic the Structure sensor? 
 
-Our three main contributions for this work are first, proposed a neural network model for depth map generation and compare with state of the art results. Secondly to deliver model which performs as good as Structure Sensor. Thirdly,  we created a new dataset based on Structural (SLB) Sensor.
+Now we understand the design structure of these question with respect to ideas, is it also important to create new dataset. This is required to answer \textbf{RQ2} and \textbf{RQ3}  because our goal is to achieve a model which is environment and task dependent and also not many of the approach does not focus in retrieving the holes. For example, existing dataset like Cornell Dataset \cite{3Dscene} , Washington Data V2 \cite{Washington}, Berkeley 3-D Object dataset (B3DO) \cite{Janoch:EECS-2012-85} etc. fail to provide with the holes except NYUv2 dataset which contains raw data information we will discuss more about the dataset in detain in section \ref{Chapter4:Dataset}. To give a justified reason for \textbf{RQ3}, we need to generate new dataset to have a common ground for comparison. 
+
+Thus, our three main contributions for this work are first, proposed a neural network model for depth map generation and compare with state of the art results. Secondly to deliver model which performs as good as Structure Sensor. Thirdly,  we created a new dataset based on Structural (SLB) Sensor.
 
 Ultimately aim to achieve a similar working neural network model replacing Structural (SLB) sensor. This might reduce the complexity in users with a trade off of computational power. In the initial phase of this research our scope of study is to generate the 3D depth maps from neural networks after training on similar depth data. All the computation and evaluation were performed and tested with high processing unit which is described in details in Section \ref{Chapter5:HardwarSoftwareDetails}.
 
