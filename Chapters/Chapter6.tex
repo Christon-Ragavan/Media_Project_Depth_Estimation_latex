@@ -24,17 +24,17 @@ In this chapter we have evaluated your system and presented a comparative result
 \textbf{\#} & \textbf{Model} & \multicolumn{3}{l}{\textbf{Accuracy}} & \multicolumn{2}{l}{\textbf{Error}} \\ \cline{3-7} 
                     &                        & \textbf{a1}       & \textbf{a2}       & \textbf{a3}      & \textbf{RMSE}         & \textbf{log\_10}      \\ \hline\hline
 \multicolumn{7}{l}{\textbf{\texttt{Influence Of Structural Characteristics} (Section \ref{Chapter6:Influence_Structural_Char})}}                                            \\ \hline
-E1                 &  A1  & 0.22         & 0.43          &  0.61       & 0.34            &   0.001           \\ \hline
-E2                  & A2  &    0.60  & 0.859 & 0.93       &   0.19          &0.11              \\ \hline 
+E1                 &  A1  & 0.22         & 0.43          &  0.61       & 0.34            &   \textbf{0.01}           \\ \hline
+E2                  & A2  &   \textbf{0.60}  & \textbf{0.859} & \textbf{0.93}      &  \textbf{0.19}          &0.11              \\ \hline 
 \multicolumn{7}{l}{\textbf{\texttt{Influence Of Different Environment Specific Models} (Section \ref{Chapter6:Transfer_Learning})}}                                                                   \\ \hline
-{E3}                  & {A2\_Holes} (N+S)              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
+{E3}                  & {A2\_Holes} (N+S)              & \textbf{0.39}   & \textbf{0.58}   & \textbf{0.65}  & \textbf{0.27}      & \textbf{1.70}       \\ \hline
 {E4}                  & {A2\_Holes} (S) & 0.33   & 0.55   & 0.63  & 0.34      & 1.78       \\ \hline
 \multicolumn{7}{l}{\textbf{\texttt{Holes Regeneration} (Section \ref{Chapter6:Hole_Regeneration})}}                                                       \\ \hline
-{E5}                  & {A2\_NoHoles}            & 0.98   & 0.98   & 0.98  & 0.10       & 0.18        \\ \hline
+{E5}                  & {A2\_NoHoles}            & \textbf{0.98}   & \textbf{0.98}   & \textbf{0.98}  & \textbf{0.10}       & \textbf{0.18}        \\ \hline
 {E6}                  & {A2\_Holes}              & 0.39   & 0.58   & 0.65  & 0.27      & 1.70       \\ \hline
 \end{tabular}
 
-\caption{This table list all the results of experimental configuration performed. These experiments are grouped in to three categories. In E3, (N+S) denotes that model trained on NYU\_v2 and SD, where as in E4,(S) denotes model trained on SD\V2}
+\caption{This table list all the results of experimental configuration performed. (N+S) denotes that model trained on NYU\_v2 and SD\_v2, where as (S) denotes model trained on SD\_v2. Best scores are highlighted in bold text in their respective categories.}
 \label{table:Results_main}
 \end{table}
 \egroup
@@ -190,30 +190,27 @@ This leads us to an conclusion that for 3D reconstruction task, interpolating of
 \section{Comparison With Baseline System}
  \label{Chapter6:ComapreS-F-A}
 
+
+From the above result, we have achieved reasonably good performing model which can learn to predict depth images which is trained to fit the structure sensor environment. For the final test for this study we would also like to compare current best working model configuration \textbf{E5 - A2\_NoHoles} with the current state of the art proposed by Alhashim et. al. \cite{Alhashim2018}. Our motivation for this evaluation to validate if our model fits the required environment (Structure Sensor and IPad) for specific task for indoor 3D reconstruction. This can be achieved by comparing with Alhashim et. al. model which was trained on different environment. This will also eventually gives us an better understanding for various qeustion. First, as discussed in Section \ref{Chapter6:Transfer_Learning} where we where unable to give a definite conclusion regarding effects of difference camera properties, with such experiment we aim to get a better understating of such effect. Second, we can justify the need for the reason for generating environment based and task based dataset (SD) to fit our model. For both the methods listed in table \ref{table:Results_SFA} we used SD test set which was described in Section \ref{Chapter4:DatasetForsplits-i} for both the methods. 
+
 \begin{table}[h]
 \centering
 \begin{tabular}{p{0.3\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.07\linewidth}} \hline
 \textbf{Methods} & \multicolumn{2}{l}{\textbf{Accuracy}} & {\textbf{Error}} \\ \cline{2-6} 
     &  a1& a2  & a3    & RMSE & log\_10   \\ \hline \hline
-\textbf{Alhashim} \cite{Alhashim2018}    &  0.39 & 0.65   &  0.82  & 0.23   &   0.16  \\ \hline
+\textbf{Alhashim} \cite{Alhashim2018}    &  0.39 & 0.65   &  0.82  & \textbf{0.23}   &   0.16  \\ \hline
 
-\textbf{Ours (E2 - A2\_NoHoles)}     &   0.89 & 0.98 & 0.99   & 0.39  &0.043  \\ \hline
+\textbf{Our (E2 - A2\_NoHoles)}     &   \textbf{0.89} & \textbf{0.98} & \textbf{0.99}   & 0.39  & \textbf{0.043}  \\ \hline
 
 \end{tabular}
 \caption{Comparison with state of the art}
 \label{table:Results_SFA}
 \end{table} 
 
-From the above result, we have achieved reasonably good performing model which can learn to predict depth images which is trained to fit the structure sensor environment. For the final test for this study we would also like to compare our model with best configuration \textbf{E5 - A2\_NoHoles} with the current state of the art proposed by Alhashim et. al. \cite{Alhashim2018}. Our motivation for this evaluation to validate if our model fits the required environment (Structure Sensor and IPad) for specific task for indoor 3D reconstruction. This can be achieved by comparing with Alhashim et. al. model which was trained on different environment. This will also eventually gives us an better understanding for various qeustion. First, as discussed in Section \ref{Chapter6:Transfer_Learning} where we where unable to give a definite conclusion regarding effects of difference camera properties, with such experiment we aim to get a better understating of such effect. Second, we can justify the need for the reason for generating environment based and task based dataset (SD) to fit our model. For both the methods listed in table \ref{table:Results_SFA} we used common SD test set which was described in Section \ref{Chapter4:DatasetForsplits-i}. 
 
+We in general notice that there is significance difference in accuracy between both the models from the above table \ref{table:Results_SFA}. When considered accuracy \textbf{Our} model performs better. For example, accuracy \textbf{a1} the difference is about \textbf{0.50}, similarly for \textbf{0.33}, \textbf{0.17} for \textbf{a2} and \textbf{a3} respectively. Meanwhile \textbf{Alhashim} has lower \textbf{RMSE} error which contractics the accuracy score. But we have lower error score \textbf{log\_{10}} which supports the accuracy score. For this it is also important to have a visual evaluation. As we see in Fig. \ref{fig:results_SFA} there is a significant difference between both the models, The model trained on NYU\_v2 dataset with Kinect Sensor dataset can learn the structural characteristic and also the depth but the difference lies in the scale of these depth maps. Visually, we see for model trained on only Kinect Sensor dataset the prediction of closer depth appears to be much closer than the ground truth. Which clearly shows that there is some influence of different model tuned for specific environment and task.
 
-
-As we see in Fig. \ref{fig:results_SFA} there is a significant difference between both the models, The model trained on NYU\_v2 dataset with Kinect Sensor dataset performs  
-
-if dataset trained on if it was necessary was For this test we used  model \textbf{A2} with pre-trained weight trained on NYU\_v2 dataset alone and compared with our best performing model from above which is \textbf{E5 - A2\_NoHoles} which was trained of two dataset NYU\_v2 and SD\_v2. The only difference between these two models is the dataset with which the decoder part was trained.
-
-
-
+Observation: Thus we believe that it is difficult for a model to generalize on different environment and task. For this, proper and careful tuning of the model has to be done to in order to get state of the art performance for specific tasks. In our case since both the models are developed for different tasks, it is difficult to compare and based on general performance but \textbf{Our} model is more suitable for the designed environment. Hence this also answers the importance of generation of dataset. Added to this we can also say we see some influence of different camera properties with respect to the scale (actual distance) but with these tests alone we cannot specifically find the specific parameter influence and also it is out of the scope this study. 
 
 
 
@@ -225,15 +222,23 @@ if dataset trained on if it was necessary was For this test we used  model \text
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/sfa/0Pred.png}\\[-1ex]
-\rowname{Ours}&
+\rowname{Our}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/0Predicted.png}\\[-1ex]
 \rowname{Alhashim}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1RAW_RGB.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1Truth.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/sfa/1Pred.png}\\[-1ex]
+\rowname{Our}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1RAW_RGB.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1Truth.png}&
+\includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/1Predicted.png}\\[-1ex]
+\rowname{Alhashim}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/sfa/2Pred.png}\\[-1ex]
-\rowname{Ours}&
+\rowname{Our}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2RAW_RGB.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2Truth.png}&
 \includegraphics[width=.3\linewidth]{Figures/results/s2_NoHoles/2Predicted.png}\\[-1ex]
@@ -241,4 +246,9 @@ if dataset trained on if it was necessary was For this test we used  model \text
 \caption{\textbf{Influence of Structural Characteristics:} All the \textbf{E3} methods are in different  }%
 \label{fig:results_SFA}
 \end{figure}
+
+In summary, after series of various testing with the different models and configurations we achieved the best performing model which is \textbf{E2 - A2\_NoHoles} (re trained model \textbf{A2} with  interpolating configuration )
+
+
+\newpage
 
