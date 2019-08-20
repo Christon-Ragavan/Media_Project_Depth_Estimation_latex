@@ -1,6 +1,14 @@
 % Chapter Template
 
 
-\chapter{Image Gallery}
+\chapter{Future Works}
 
-\label{Chapter8:Image_Gallery}
+\label{Chapter8:FutureWorks}
+
+In our study we tried to experiment on the depth estimation to fit the Structure sensor environment. Even though we have achieved our primary objective of finding a best working approach of monocular depth estimation using neural network the challenges highlighted above cannot be imperceptible. This also invites some more question related to this research field.  We believe that there are two specific areas where improvements can be done. First, with respect to the \textbf{A1} model performance. Secondly, the artifacts of hole regeneration approach.
+
+One of the ares for \textbf{A1} model improvement could be just by increasing the variance of the dataset with respect to indoor environment, this because we noticed that training on additional dataset from NYU\_v2 have shown improved results. Another interesting approach could be experimented by applying transform to the camera space of structure sensor dataset to fit the kinect sensor properties. This is because of the availability large dataset and pre trained model which saves the computational time. This can also help us to get a generalization of a model. Meanwhile thinking about some ideas with respect to the input features, having additional feature information by computing surface normal on a pixel level can give additional feature learning information which can help the model perform better. 
+
+Secondly, to further investigate over the artifacts caused by holes, there is a need for post processing methods or training with larger dataset. The artifacts results as an intermediate pixel in between the zero pixel and the next neighboring pixel of object. Which means that the object boundaries are not well defined. One of the stadard approach could be done by sharpening such boundaries  \cite{gui2011image}. There are also methods where neural network has been used for edge detection. One such example is proposed by Xie et. al. a multi - scale edge feature extraction \cite{xie2015holistically} which can help us elucidate such boundaries and further sharpening post processing methods can be applied to it.
+
+Therefore, this study gives us a good understanding of the behaviour of a neural network on different environment and task specifically for depth estimation problems. And we also have seen that there is potential area of research which can be extended for future study. 

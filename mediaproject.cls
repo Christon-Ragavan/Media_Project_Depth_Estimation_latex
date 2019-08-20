@@ -423,6 +423,39 @@ KOMA-script documentation for details.}]{fancyhdr}
 	}
 }
 
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	Declaration of independance PAGE DESIGN
+%----------------------------------------------------------------------------------------
+
+\usepackage{xcolor}
+\colorlet{mdtRed}{red!50!black}
+\newcommand{\DeclarationOIname}{DeclarationOFIndependence}
+\providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish} {\DeclarationOIname}{Declaration Of Independence} % Acknowledgement text for English countries
+\providecaptionname{german,ngerman,austrian,naustrian}{\DeclarationOIname}{Danksagung} % Acknowledgement text for Germanic countries
+
+\ifbool{consistentlayout}{
+	\DeclareDocumentEnvironment{DeclarationOFIndependence}{}{%
+		\tttypeout{\DeclarationOIname}
+		\addchap*{\DeclarationOIname}
+	}
+}
+{
+	\DeclareDocumentEnvironment{DeclarationOFIndependence}{}{%
+		\checktoopen
+		\tttypeout{\DeclarationOIname}
+		\thispagestyle{plain}
+		\begin{center}{\huge\textit{\DeclarationOIname}\par}\end{center}
+	}
+	{
+		\vfil\vfil\null
+	}
+}
+
+
 %----------------------------------------------------------------------------------------
 %	DECLARATION PAGE DESIGN
 %----------------------------------------------------------------------------------------
