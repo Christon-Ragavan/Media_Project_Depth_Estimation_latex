@@ -107,7 +107,7 @@ headsepline, % Uncomment to get a line under the header
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 \thesistitle{Monocular Depth Estimation of Indoor Environment using neural network} % Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
-\supervisor{Prof. Dr. Wolfgang Brol} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\supervisor{Prof. Dr. Wolfgang Broll} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{Christian Kunert, MSc} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{Doctor of Philosophy} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
 \author{Christon Ragavan Nadar and Shivam Sani} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
@@ -121,6 +121,7 @@ headsepline, % Uncomment to get a line under the header
 \hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
 \hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
 \hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+%\hypersetup{colorlinks=false}
 }
 
 \begin{document}
@@ -250,7 +251,7 @@ headsepline, % Uncomment to get a line under the header
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-We would like to thank Professor Dr. Wolfgang Broll and the department of Virtual Worlds and Digital Games Group who have given an opportunity to perform this study. We would like to show our gratitude towards our project advisor Christian Kunert, M.Sc. who created an supportive and encouraging atmosphere during our project. We are very pleased to for his availability and brainstorming over various ideas and methods. Also we are thankful for Tobias Schwandt, M. Sc. for his ever present support during this entire study process. My friend Andrew Ng, M. Sc. who have always been my great encouragement and support. A huge thank you note towards various blog writers who have played an important role in understanding various neural network concepts, without which this journey would have not been easier. 
+We would like to thank Professor Dr. Wolfgang Broll and the department of Virtual Worlds and Digital Games Group who have given an opportunity to perform this study. We would like to show our gratitude towards our project advisor Christian Kunert, M.Sc. who created an supportive and encouraging atmosphere during our project. We are very pleased to for his availability and brainstorming over various ideas and methods. Also we are thankful for Tobias Schwandt, M. Sc. for his ever present support during this entire study process. Andrew Ng, M. Sc. who have always been my great encouragement and support. A huge thank you note towards various blog writers who have played an important role in understanding various neural network concepts, without which this journey would have not been easier. 
 
 
 \end{acknowledgements}
@@ -337,16 +338,6 @@ We would like to thank Professor Dr. Wolfgang Broll and the department of Virtua
 %	THESIS CONTENT - APPENDICES
 %----------------------------------------------------------------------------------------
 
-\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
-
-% Include the appendices of the thesis as separate files from the Appendices folder
-% Uncomment the lines as you write the Appendices
-
-%\bibliography{reference}
-%\include{Appendices/AppendixA}
-%\include{Appendices/AppendixB}
-%\include{Appendices/AppendixC}
-
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
@@ -362,6 +353,75 @@ We would like to thank Professor Dr. Wolfgang Broll and the department of Virtua
 
 \newpage
 
+
+
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
+
+\textbf{2D} & \textbf{2} \textbf{D}imensional \\
+\textbf{3D} & \textbf{3} \textbf{D}imensional \\
+\textbf{ANN} & \textbf{A}rtificial \textbf{N}eural \textbf{N}etwork  \\
+\textbf{B3DO} & \textbf{B}erkeley \textbf{3} \textbf{D}imensional \textbf{O}bject Dataset  \\
+\textbf{CNN} & \textbf{C}onvolutional \textbf{N}eural \textbf{N}etwork  \\
+\textbf{cm} & \textbf{C}enti \textbf{M}eters \\
+\textbf{DenseNet} & \textbf{Dense}ly Connected Convolutional \textbf{Net}work\\
+\textbf{DNN} & \textbf{D}eep \textbf{N}eural \textbf{N}etwork\\
+\textbf{GeoNet} & \textbf{Geo}metric \textbf{Net}work  \\
+\textbf{GPS} & \textbf{G}lobal \textbf{P}ositioning \textbf{S}ystem  \\
+\textbf{IOS} & \textbf{i}Phone and \textbf{O}perating \textbf{S}ystem\\
+\textbf{m} & \textbf{M}eters \\
+\textbf{mm} & \textbf{M}illi \textbf{M}eters \\
+\textbf{MRF} & \textbf{M}arkov \textbf{R}andom \textbf{F}ield\\
+\textbf{NN} & \textbf{N}eural \textbf{N}etwork \\
+\textbf{NYU\_v1} & \textbf{N}ew \textbf{Y}ork \textbf{U}niversity Dataset \textbf{V}ersion 1\\
+\textbf{NYU\_v2} & \textbf{N}ew \textbf{Y}ork \textbf{U}niversity Dataset \textbf{V}ersion 2\\
+\textbf{ReLU} & \textbf{Re}ctified \textbf{L}inear \textbf{U}nit \\
+\textbf{ResNet} & \textbf{Res}idual \textbf{Net}work  \\
+\textbf{RGB} & \textbf{R}ed \textbf{G}reen \textbf{B}lue \\
+\textbf{RGBD} & \textbf{R}ed \textbf{G}reen \textbf{B}lue and \textbf{D}epth \\
+\textbf{RMSE} & \textbf{R}oot \textbf{M}ean \textbf{S}quare \textbf{E}rror\\
+\textbf{RNN} & \textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork  \\
+\textbf{RQ} & \textbf{R}esearch \textbf{Q}uestions \\
+\textbf{SD} & \textbf{S}tructure \textbf{D}ataset \\
+\textbf{SD\_v1} & \textbf{S}tructure \textbf{D}ataset \textbf{V}ersion 1\\
+\textbf{SD\_v2} & \textbf{S}tructure \textbf{D}ataset \textbf{V}ersion 2\\
+\textbf{SDK} & \textbf{S}oftware \textbf{D}evelopment \textbf{K}it \\
+\textbf{SENet} & \textbf{S}queeze and \textbf{E}xcitation \textbf{Net}work\\
+\textbf{SfM} & \textbf{S}tructure \textbf{f}rom \textbf{M}otion\\
+\textbf{SLAM} & \textbf{S}imultaneous \textbf{L}ocalization \textbf{a}nd \textbf{M}apping\\
+\textbf{SLS} & \textbf{S}tructured \textbf{L}ight \textbf{S}ystem\\
+\textbf{SOC} & \textbf{S}ystem \textbf{o}n the \textbf{C}hip\\
+\textbf{SSIM} & \textbf{S}tructural \textbf{S}imilarity \textbf{I}ndex \\
+\textbf{ToF} & \textbf{T}ime \textbf{o}f \textbf{F}light\\
+\textbf{USB} & \textbf{U}niversal \textbf{S}erial \textbf{B}us\\
+\textbf{VGGNet} & \textbf{V}isual \textbf{G}eometry \textbf{G}roup \textbf{Net}work\\
+
+
+
+\end{abbreviations}
+
+
+\newpage
+
+
+
+
+
+\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+%\bibliography{reference}
+\include{Appendices/AppendixA}
+%\include{Appendices/AppendixB}
+%\include{Appendices/AppendixC}
+
+
+\newpage
 
 \begin{DeclarationOFIndependence}
 \addchaptertocentry{\DeclarationOIname} 
@@ -423,55 +483,6 @@ We declare that we have carried out and written this work independently. Source 
 
 \end{DeclarationOFIndependence}
 \newpage
-
-%----------------------------------------------------------------------------------------
-%	ABBREVIATIONS
-%----------------------------------------------------------------------------------------
-
-\begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
-
-\textbf{2D} & \textbf{2} \textbf{D}imensional \\
-\textbf{3D} & \textbf{3} \textbf{D}imensional \\
-\textbf{ANN} & \textbf{A}rtificial \textbf{N}eural \textbf{N}etwork  \\
-\textbf{B3DO} & \textbf{B}erkeley \textbf{3} \textbf{D}imensional \textbf{O}bject Dataset  \\
-\textbf{CNN} & \textbf{C}onvolutional \textbf{N}eural \textbf{N}etwork  \\
-\textbf{cm} & \textbf{C}enti \textbf{M}eters \\
-\textbf{DenseNet} & \textbf{Dense}ly Connected Convolutional \textbf{Net}work\\
-\textbf{DNN} & \textbf{D}eep \textbf{N}eural \textbf{N}etwork\\
-\textbf{GeoNet} & \textbf{Geo}metric \textbf{Net}work  \\
-\textbf{GPS} & \textbf{G}lobal \textbf{P}ositioning \textbf{S}ystem  \\
-\textbf{IOS} & \textbf{i}Phone and \textbf{O}perating \textbf{S}ystem\\
-\textbf{m} & \textbf{M}eters \\
-\textbf{mm} & \textbf{M}illi \textbf{M}eters \\
-\textbf{MRF} & \textbf{M}arkov \textbf{R}andom \textbf{F}ield\\
-\textbf{NN} & \textbf{N}eural \textbf{N}etwork \\
-\textbf{NYU\_v1} & \textbf{N}ew \textbf{Y}ork \textbf{U}niversity Dataset \textbf{V}ersion 1\\
-\textbf{NYU\_v2} & \textbf{N}ew \textbf{Y}ork \textbf{U}niversity Dataset \textbf{V}ersion 2\\
-\textbf{ReLU} & \textbf{Re}ctified \textbf{L}inear \textbf{U}nit \\
-\textbf{ResNet} & \textbf{Res}idual \textbf{Net}work  \\
-\textbf{RGB} & \textbf{R}ed \textbf{G}reen \textbf{B}lue \\
-\textbf{RGBD} & \textbf{R}ed \textbf{G}reen \textbf{B}lue and \textbf{D}epth \\
-\textbf{RMSE} & \textbf{R}oot \textbf{M}ean \textbf{S}quare \textbf{E}rror\\
-\textbf{RNN} & \textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork  \\
-\textbf{RQ} & \textbf{R}esearch \textbf{Q}uestions \\
-\textbf{SD} & \textbf{S}tructure \textbf{D}ataset \\
-\textbf{SD\_v1} & \textbf{S}tructure \textbf{D}ataset \textbf{V}ersion 1\\
-\textbf{SD\_v2} & \textbf{S}tructure \textbf{D}ataset \textbf{V}ersion 2\\
-\textbf{SDK} & \textbf{S}oftware \textbf{D}evelopment \textbf{K}it \\
-\textbf{SENet} & \textbf{S}queeze and \textbf{E}xcitation \textbf{Net}work\\
-\textbf{SfM} & \textbf{S}tructure \textbf{f}rom \textbf{M}otion\\
-\textbf{SLAM} & \textbf{S}imultaneous \textbf{L}ocalization \textbf{a}nd \textbf{M}apping\\
-\textbf{SLS} & \textbf{S}tructured \textbf{L}ight \textbf{S}ystem\\
-\textbf{SOC} & \textbf{S}ystem \textbf{o}n the \textbf{C}hip\\
-\textbf{SSIM} & \textbf{S}tructural \textbf{S}imilarity \textbf{I}ndex \\
-\textbf{ToF} & \textbf{T}ime \textbf{o}f \textbf{F}light\\
-\textbf{USB} & \textbf{U}niversal \textbf{S}erial \textbf{B}us\\
-\textbf{VGGNet} & \textbf{V}isual \textbf{G}eometry \textbf{G}roup \textbf{Net}work\\
-
-
-
-\end{abbreviations}
-
 %----------------------------------------------------------------------------------------
 %	PHYSICAL CONSTANTS/OTHER DEFINITIONS
 %----------------------------------------------------------------------------------------
